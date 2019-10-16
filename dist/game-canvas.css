@@ -1,0 +1,31 @@
+canvas{
+  border: 1px solid #000;
+  background-color: #70c5ce;
+  display: flex;
+  flex-flow: column;
+  margin: 0 auto;
+  /* background-image: url('../img/flappy-bird-sprites.png'); */
+}
+
+.game-title {
+  margin: 0 auto;
+  font-family: Teko;
+  color: #000;
+  font-size: 48px;
+  text-align: center;
+}
+
+.screen-area{
+  font-family: Teko;
+  font-size: 36px;
+  justify-content: space-around;
+  display: flex;
+  flex-direction: row;
+  background-color: blue,
+}
+
+.sprite {
+	background: url('imgs/flappy-bird-sprites.png') no-repeat 0px 0px;
+	width: 275px;
+	height: 226px;
+}
