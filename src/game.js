@@ -12,7 +12,7 @@ class Game {
 
     // IMG SOURCE FOR BACKGROUND
     let bgImg = new Image();
-    bgImg.src = "../img/flappy-bird-sprites.png";
+    bgImg.src = "../img/background-sprites.png";
 
     // SLICING OUT BUILDINGS, CLOUDS, AND BRUSH
     const bg = {

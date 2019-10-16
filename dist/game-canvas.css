@@ -4,7 +4,6 @@ canvas{
   display: flex;
   flex-flow: column;
   margin: 0 auto;
-  /* background-image: url('../img/flappy-bird-sprites.png'); */
 }
 
 .game-title {
@@ -21,11 +20,4 @@ canvas{
   justify-content: space-around;
   display: flex;
   flex-direction: row;
-  background-color: blue,
-}
-
-.sprite {
-	background: url('imgs/flappy-bird-sprites.png') no-repeat 0px 0px;
-	width: 275px;
-	height: 226px;
 }

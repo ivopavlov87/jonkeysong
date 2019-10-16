@@ -109,7 +109,7 @@ class Game {
 
     // IMG SOURCE FOR BACKGROUND
     let bgImg = new Image();
-    bgImg.src = "../img/flappy-bird-sprites.png";
+    bgImg.src = "../img/background-sprites.png";
 
     // SLICING OUT BUILDINGS, CLOUDS, AND BRUSH
     const bg = {
@@ -169,7 +169,6 @@ class GameView {
   constructor(game, ctx) {
     this.game = game;
     this.ctx = ctx;
-    this.interval = "";
   }
 
   start() {
