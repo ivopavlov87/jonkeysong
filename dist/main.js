@@ -95,12 +95,16 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _jonkey_song__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./jonkey_song */ "./src/jonkey_song.js");
+
+
 console.log("Webpack is working! game.js")
 
 class Game {
   constructor() {
     this.width = 480;
     this.height = 640;
+    this.jonkeysong = new _jonkey_song__WEBPACK_IMPORTED_MODULE_0__["default"](this);
   }
 
   drawBackground(ctx) {
@@ -110,6 +114,9 @@ class Game {
     // IMG SOURCE FOR BACKGROUND
     let bgImg = new Image();
     bgImg.src = "../img/background-sprites.png";
+
+    // let sprite = new Image();
+    // sprite.src = "../img/sprites.png";
 
     // SLICING OUT BUILDINGS, CLOUDS, AND BRUSH
     const bg = {
@@ -149,6 +156,7 @@ class Game {
 
   draw(ctx) {
     this.drawBackground(ctx);
+    this.jonkeysong.draw(ctx);
   }
 }
 
@@ -223,6 +231,109 @@ document.addEventListener("DOMContentLoaded", () => {
 
   new _game_view__WEBPACK_IMPORTED_MODULE_1__["default"](game, ctx).start();
 })
+
+/***/ }),
+
+/***/ "./src/jonkey_song.js":
+/*!****************************!*\
+  !*** ./src/jonkey_song.js ***!
+  \****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+class JonkeySong{
+  constructor(game){
+    this.game = game;
+  }
+
+  draw(ctx){
+    let sprite = new Image();
+    sprite.src = "../img/sprites.png";
+
+    const jonkeySong = {
+      animation: [
+        { sX: 58, sY: 152 },
+        { sX: 9, sY: 152 },
+        // { sX: 158, sY: 152 },
+        { sX: 158, sY: 152 },
+        { sX: 254, sY: 152 },
+        { sX: 202, sY: 152 }
+      ],
+      w: 45,
+      h: 32,
+      x: 100,
+      y: 100,
+
+      frame: 0,
+    }
+
+    const barrel = {
+      sX: 113,
+      sY: 265,
+      w: 10,
+      h: 16,
+      x: 80,
+      y: 125
+    }
+
+    let jSong = jonkeySong.animation[jonkeySong.frame]
+
+    sprite.onload = function() {
+      ctx.drawImage(sprite, 
+        jSong.sX, 
+        jSong.sY, 
+        jonkeySong.w, 
+        jonkeySong.h, 
+        jonkeySong.x, 
+        jonkeySong.y,
+        jonkeySong.w * 1.5, 
+        jonkeySong.h * 1.5);
+
+      ctx.drawImage(sprite,
+        barrel.sX,
+        barrel.sY,
+        barrel.w,
+        barrel.h,
+        barrel.x,
+        barrel.y,
+        barrel.w * 1.5,
+        barrel.h * 1.5);
+
+      ctx.drawImage(sprite,
+        barrel.sX,
+        barrel.sY,
+        barrel.w,
+        barrel.h,
+        barrel.x - 15,
+        barrel.y,
+        barrel.w * 1.5,
+        barrel.h * 1.5);
+      ctx.drawImage(sprite,
+        barrel.sX,
+        barrel.sY,
+        barrel.w,
+        barrel.h,
+        barrel.x,
+        barrel.y - 22,
+        barrel.w * 1.5,
+        barrel.h * 1.5);
+      ctx.drawImage(sprite,
+        barrel.sX,
+        barrel.sY,
+        barrel.w,
+        barrel.h,
+        barrel.x - 15,
+        barrel.y - 22,
+        barrel.w * 1.5,
+        barrel.h * 1.5);
+    }
+  }
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (JonkeySong);
 
 /***/ })
 

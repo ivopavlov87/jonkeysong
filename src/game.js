@@ -1,9 +1,12 @@
+import JonkeySong from "./jonkey_song";
+
 console.log("Webpack is working! game.js")
 
 class Game {
   constructor() {
     this.width = 480;
     this.height = 640;
+    this.jonkeysong = new JonkeySong(this);
   }
 
   drawBackground(ctx) {
@@ -13,6 +16,9 @@ class Game {
     // IMG SOURCE FOR BACKGROUND
     let bgImg = new Image();
     bgImg.src = "../img/background-sprites.png";
+
+    // let sprite = new Image();
+    // sprite.src = "../img/sprites.png";
 
     // SLICING OUT BUILDINGS, CLOUDS, AND BRUSH
     const bg = {
@@ -52,6 +58,7 @@ class Game {
 
   draw(ctx) {
     this.drawBackground(ctx);
+    this.jonkeysong.draw(ctx);
   }
 }
 
