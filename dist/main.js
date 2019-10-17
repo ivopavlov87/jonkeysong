@@ -86,6 +86,80 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/barrel.js":
+/*!***********************!*\
+  !*** ./src/barrel.js ***!
+  \***********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+class Barrel{
+  constructor(game) {
+    this.game = game;
+  }
+
+  draw(ctx) {
+    let sprite = new Image();
+    sprite.src = "../img/sprites.png";
+
+    const barrel = {
+      sX: 113,
+      sY: 265,
+      w: 10,
+      h: 16,
+      x: 80,
+      y: 125
+    }
+
+    sprite.onload = function(){
+      // START OF BARREL SUPPLY
+      ctx.drawImage(sprite,
+        barrel.sX,
+        barrel.sY,
+        barrel.w,
+        barrel.h,
+        barrel.x,
+        barrel.y,
+        barrel.w * 1.5,
+        barrel.h * 1.5);
+      ctx.drawImage(sprite,
+        barrel.sX,
+        barrel.sY,
+        barrel.w,
+        barrel.h,
+        barrel.x - 15,
+        barrel.y,
+        barrel.w * 1.5,
+        barrel.h * 1.5);
+      ctx.drawImage(sprite,
+        barrel.sX,
+        barrel.sY,
+        barrel.w,
+        barrel.h,
+        barrel.x,
+        barrel.y - 22,
+        barrel.w * 1.5,
+        barrel.h * 1.5);
+      ctx.drawImage(sprite,
+        barrel.sX,
+        barrel.sY,
+        barrel.w,
+        barrel.h,
+        barrel.x - 15,
+        barrel.y - 22,
+        barrel.w * 1.5,
+        barrel.h * 1.5);
+      // END OF BARREL SUPPLY
+    }
+  }
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Barrel);
+
+/***/ }),
+
 /***/ "./src/game.js":
 /*!*********************!*\
   !*** ./src/game.js ***!
@@ -96,6 +170,10 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _jonkey_song__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./jonkey_song */ "./src/jonkey_song.js");
+/* harmony import */ var _barrel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./barrel */ "./src/barrel.js");
+/* harmony import */ var _level_one__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./level_one */ "./src/level_one.js");
+
+
 
 
 console.log("Webpack is working! game.js")
@@ -104,7 +182,9 @@ class Game {
   constructor() {
     this.width = 480;
     this.height = 640;
-    this.jonkeysong = new _jonkey_song__WEBPACK_IMPORTED_MODULE_0__["default"](this);
+    this.jonkeySong = new _jonkey_song__WEBPACK_IMPORTED_MODULE_0__["default"](this);
+    this.barrel = new _barrel__WEBPACK_IMPORTED_MODULE_1__["default"](this);
+    this.levelOne = new _level_one__WEBPACK_IMPORTED_MODULE_2__["default"](this);
   }
 
   drawBackground(ctx) {
@@ -114,9 +194,6 @@ class Game {
     // IMG SOURCE FOR BACKGROUND
     let bgImg = new Image();
     bgImg.src = "../img/background-sprites.png";
-
-    // let sprite = new Image();
-    // sprite.src = "../img/sprites.png";
 
     // SLICING OUT BUILDINGS, CLOUDS, AND BRUSH
     const bg = {
@@ -156,7 +233,9 @@ class Game {
 
   draw(ctx) {
     this.drawBackground(ctx);
-    this.jonkeysong.draw(ctx);
+    this.jonkeySong.draw(ctx);
+    this.barrel.draw(ctx);
+    this.levelOne.draw(ctx);
   }
 }
 
@@ -270,14 +349,14 @@ class JonkeySong{
       frame: 0,
     }
 
-    const barrel = {
-      sX: 113,
-      sY: 265,
-      w: 10,
-      h: 16,
-      x: 80,
-      y: 125
-    }
+    // const barrel = {
+    //   sX: 113,
+    //   sY: 265,
+    //   w: 10,
+    //   h: 16,
+    //   x: 80,
+    //   y: 125
+    // }
 
     let jSong = jonkeySong.animation[jonkeySong.frame]
 
@@ -292,48 +371,205 @@ class JonkeySong{
         jonkeySong.w * 1.5, 
         jonkeySong.h * 1.5);
 
-      ctx.drawImage(sprite,
-        barrel.sX,
-        barrel.sY,
-        barrel.w,
-        barrel.h,
-        barrel.x,
-        barrel.y,
-        barrel.w * 1.5,
-        barrel.h * 1.5);
+      // ctx.drawImage(sprite,
+      //   barrel.sX,
+      //   barrel.sY,
+      //   barrel.w,
+      //   barrel.h,
+      //   barrel.x,
+      //   barrel.y,
+      //   barrel.w * 1.5,
+      //   barrel.h * 1.5);
 
-      ctx.drawImage(sprite,
-        barrel.sX,
-        barrel.sY,
-        barrel.w,
-        barrel.h,
-        barrel.x - 15,
-        barrel.y,
-        barrel.w * 1.5,
-        barrel.h * 1.5);
-      ctx.drawImage(sprite,
-        barrel.sX,
-        barrel.sY,
-        barrel.w,
-        barrel.h,
-        barrel.x,
-        barrel.y - 22,
-        barrel.w * 1.5,
-        barrel.h * 1.5);
-      ctx.drawImage(sprite,
-        barrel.sX,
-        barrel.sY,
-        barrel.w,
-        barrel.h,
-        barrel.x - 15,
-        barrel.y - 22,
-        barrel.w * 1.5,
-        barrel.h * 1.5);
+      // ctx.drawImage(sprite,
+      //   barrel.sX,
+      //   barrel.sY,
+      //   barrel.w,
+      //   barrel.h,
+      //   barrel.x - 15,
+      //   barrel.y,
+      //   barrel.w * 1.5,
+      //   barrel.h * 1.5);
+      // ctx.drawImage(sprite,
+      //   barrel.sX,
+      //   barrel.sY,
+      //   barrel.w,
+      //   barrel.h,
+      //   barrel.x,
+      //   barrel.y - 22,
+      //   barrel.w * 1.5,
+      //   barrel.h * 1.5);
+      // ctx.drawImage(sprite,
+      //   barrel.sX,
+      //   barrel.sY,
+      //   barrel.w,
+      //   barrel.h,
+      //   barrel.x - 15,
+      //   barrel.y - 22,
+      //   barrel.w * 1.5,
+      //   barrel.h * 1.5);
     }
   }
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (JonkeySong);
+
+/***/ }),
+
+/***/ "./src/level_one.js":
+/*!**************************!*\
+  !*** ./src/level_one.js ***!
+  \**************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+class LevelOne{
+  constructor(game) {
+    this.game = game;
+  }
+
+  draw(ctx){
+    let sprite = new Image();
+    sprite.src = "../img/sprites.png";
+
+    const redSteel = {
+      sX: 222,
+      sY: 272,
+      w: 16,
+      h: 8,
+      x: 65,
+      y: 148
+    }
+
+    sprite.onload = function() {
+      // TOP FLOOR, PART 1
+      let i;
+      for (i = 0; i < 12; i++){
+        ctx.drawImage(sprite,
+        redSteel.sX,
+        redSteel.sY,
+        redSteel.w,
+        redSteel.h,
+        redSteel.x + (redSteel.w * 1.5)*i,
+        redSteel.y,
+        redSteel.w * 1.5,
+        redSteel.h * 1.5);
+      }
+
+      // TOP FLOOR, PART 2
+      let j;
+      for (j = 1; j < 5; j++){
+        ctx.drawImage(sprite,
+          redSteel.sX,
+          redSteel.sY,
+          redSteel.w,
+          redSteel.h,
+          redSteel.x + (redSteel.w*1.5*(12+j-1)),
+          redSteel.y + j,
+          redSteel.w * 1.5,
+          redSteel.h * 1.5);
+      }
+
+      // PENULTIMATE FLOOR
+      let k;
+      for (k = 1; k < 20; k++){
+        ctx.drawImage(sprite,
+          redSteel.sX,
+          redSteel.sY,
+          redSteel.w,
+          redSteel.h,
+          redSteel.x + (redSteel.w*1.5*(17.5 - k)),
+          redSteel.y + 46 + k,
+          redSteel.w * 1.5,
+          redSteel.h * 1.5);
+        }
+
+      // FOURTH FLOOR
+      let l;
+      for (l = 1; l < 20; l++){
+        ctx.drawImage(sprite,
+          redSteel.sX,
+          redSteel.sY,
+          redSteel.w,
+          redSteel.h,
+          redSteel.x + (redSteel.w*1.5*(17.3 - l)) - redSteel.w*1.5,
+          redSteel.y + 128 - l,
+          redSteel.w * 1.5,
+          redSteel.h * 1.5);
+      }
+
+      // THIRD FLOOR
+      let m;
+      for (m = 1; m < 20; m++){
+        ctx.drawImage(sprite,
+          redSteel.sX,
+          redSteel.sY,
+          redSteel.w,
+          redSteel.h,
+          redSteel.x + (redSteel.w * 1.5 * (17.4 - m)),
+          redSteel.y + 172 + m,
+          redSteel.w * 1.5,
+          redSteel.h * 1.5);
+      }
+
+      // SECOND FLOOR
+      let n;
+      for (n = 1; n < 20; n++) {
+        ctx.drawImage(sprite,
+          redSteel.sX,
+          redSteel.sY,
+          redSteel.w,
+          redSteel.h,
+          redSteel.x + (redSteel.w * 1.5 * (17.3 - n)) - redSteel.w * 1.5,
+          redSteel.y + 260 - n,
+          redSteel.w * 1.5,
+          redSteel.h * 1.5);
+      }
+
+      // THIRD FLOOR
+      let o;
+      for (o = 1; o < 20; o++) {
+        ctx.drawImage(sprite,
+          redSteel.sX,
+          redSteel.sY,
+          redSteel.w,
+          redSteel.h,
+          redSteel.x + (redSteel.w * 1.5 * (17.4 - o)),
+          redSteel.y + 300 + o,
+          redSteel.w * 1.5,
+          redSteel.h * 1.5);
+      }
+
+      // THIRD FLOOR
+      let p;
+      for (p = 1; p < 20; p++) {
+        ctx.drawImage(sprite,
+          redSteel.sX,
+          redSteel.sY,
+          redSteel.w,
+          redSteel.h,
+          redSteel.x + (redSteel.w * 1.5 * (17.3 - p)) - redSteel.w * 1.5,
+          redSteel.y + 380 - p,
+          redSteel.w * 1.5,
+          redSteel.h * 1.5);
+      }
+
+      ctx.drawImage(sprite,
+        redSteel.sX,
+        redSteel.sY,
+        redSteel.w,
+        redSteel.h,
+        456,
+        527,
+        redSteel.w * 1.5,
+        redSteel.h * 1.5);
+    }
+  }
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (LevelOne);
 
 /***/ })
 
