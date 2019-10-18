@@ -160,6 +160,58 @@ class Barrel{
 
 /***/ }),
 
+/***/ "./src/flame_barrel.js":
+/*!*****************************!*\
+  !*** ./src/flame_barrel.js ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+class FlameBarrel {
+  constructor(game) {
+    this.game = game;
+  }
+
+  draw(ctx){
+    const sprite = new Image();
+    sprite.src = "../img/sprites.png";
+
+    const flickerBarrel = {
+      flickerAnimation: [
+        { sX: 125, sY: 256 },
+        { sX: 144, sY: 246 }
+      ],
+      x: 456,
+      y: 491,
+      w: 16,
+      h: 24,
+
+      frame: 0
+    };
+
+    let flicker = flickerBarrel.flickerAnimation[flickerBarrel.frame];
+
+    sprite.onload = function () {
+      ctx.drawImage(sprite,
+        flicker.sX,
+        flicker.sY,
+        flickerBarrel.w,
+        flickerBarrel.h,
+        flickerBarrel.x,
+        flickerBarrel.y,
+        flickerBarrel.w * 1.5,
+        flickerBarrel.h * 1.5);
+    }
+
+  }
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (FlameBarrel);
+
+/***/ }),
+
 /***/ "./src/game.js":
 /*!*********************!*\
   !*** ./src/game.js ***!
@@ -172,6 +224,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _jonkey_song__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./jonkey_song */ "./src/jonkey_song.js");
 /* harmony import */ var _barrel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./barrel */ "./src/barrel.js");
 /* harmony import */ var _level_one__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./level_one */ "./src/level_one.js");
+/* harmony import */ var _plumber__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./plumber */ "./src/plumber.js");
+/* harmony import */ var _flame_barrel__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./flame_barrel */ "./src/flame_barrel.js");
+/* harmony import */ var _princess__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./princess */ "./src/princess.js");
+
+
+
 
 
 
@@ -185,11 +243,17 @@ class Game {
     this.jonkeySong = new _jonkey_song__WEBPACK_IMPORTED_MODULE_0__["default"](this);
     this.barrel = new _barrel__WEBPACK_IMPORTED_MODULE_1__["default"](this);
     this.levelOne = new _level_one__WEBPACK_IMPORTED_MODULE_2__["default"](this);
+    this.plumber = new _plumber__WEBPACK_IMPORTED_MODULE_3__["default"](this);
+    this.flameBarrel = new _flame_barrel__WEBPACK_IMPORTED_MODULE_4__["default"](this);
+    this.princess = new _princess__WEBPACK_IMPORTED_MODULE_5__["default"](this);
   }
 
   drawBackground(ctx) {
     // "#70c5ce"; - SKY COLOR
     // "#86E18D"; - BRUSH COLOR
+
+    ctx.fillStyle = "skyblue";
+    ctx.fillRect(0, 0, this.width, this.height);
 
     // IMG SOURCE FOR BACKGROUND
     let bgImg = new Image();
@@ -232,10 +296,14 @@ class Game {
   }
 
   draw(ctx) {
+    // ctx.clearRect(0, 0, this.width, this.height);
     this.drawBackground(ctx);
     this.jonkeySong.draw(ctx);
     this.barrel.draw(ctx);
     this.levelOne.draw(ctx);
+    this.plumber.draw(ctx);
+    this.flameBarrel.draw(ctx);
+    this.princess.draw(ctx);
   }
 }
 
@@ -252,15 +320,29 @@ class Game {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+console.log("game view is here!")
+
 class GameView {
   constructor(game, ctx) {
     this.game = game;
     this.ctx = ctx;
+    this.interval = "";
+    this.rightKey = false;
+    this.leftKey = false;
+    this.spacebar = false;
   }
 
   start() {
     let that = this;
-    that.game.draw(that.ctx);
+    that.bindKeyHandlers();
+    this.game.drawBackground(this.ctx);
+    this.game.levelOne.draw(this.ctx);
+    // requestAnimationFrame(start());
+    this.interval = setInterval(function () {
+      // this.ctx.clearRect(0, 0, game.width, game.height);
+      that.game.draw(that.ctx);
+    }, 1000/60)
+    
   }
 
   stop() {
@@ -275,8 +357,64 @@ class GameView {
 
   }
 
-  bindKeyHandlers() {
+  keyDownHandler(e) {
+    if (e.key === "ArrowRight" || e.key === "d") {
+      this.rightKey = true;
+      console.log("arrow-right down");
+    } else if (e.key === "ArrowLeft" || e.key === "a") {
+      this.leftKey = true
+      console.log("arrow-left down");
+    }
 
+    if (e.key === " "){
+      this.spacebar = true;
+      console.log("space pushed")
+      console.log(this.spacebar);
+    }
+
+    if (e.key === "ArrowLeft" && this.leftKey) {
+      this.game.plumber.posX -= 7;
+    }
+    if (e.key === "ArrowRight" && this.rightKey) {
+      this.game.plumber.posX += 7;
+    }
+
+    if (e.key === " " && this.spacebar && this.game.plumber.canJump) {
+      this.game.plumber.posY -= 50;
+      this.game.plumber.canJump = false;
+    } else if (!this.spacebar && this.game.plumber.posY <= 500){
+      if (this.rightKey) {
+        this.game.plumber.posX += 7;
+      } else if (this.leftKey) {
+        this.game.plumber.posX -= 7;
+      }
+    } else if (!this.spacebar && this.game.plumber.posY <= 500){
+      this.game.plumber.posY += 10;
+    }
+
+    console.log(e.keyCode);
+
+  }
+
+  keyUpHandler(e) {
+    if (e.key === "ArrowRight" || e.key === "d") {
+      this.rightKey = false;
+      console.log("arrow-right up");
+    } else if (e.key === "ArrowLeft" || e.key === "a") {
+      this.leftKey = false
+      console.log("arrow-left up");
+    }
+
+    if (e.key === " "){
+      this.spacebar = false;
+      console.log("spacebar up")
+    }
+  }
+
+  bindKeyHandlers() {
+    let gameV = this;
+    document.addEventListener("keydown", (e) => this.keyDownHandler(e), false);
+    document.addEventListener("keyup", (e) => this.keyUpHandler(e), false);
   }
 }
 
@@ -349,15 +487,6 @@ class JonkeySong{
       frame: 0,
     }
 
-    // const barrel = {
-    //   sX: 113,
-    //   sY: 265,
-    //   w: 10,
-    //   h: 16,
-    //   x: 80,
-    //   y: 125
-    // }
-
     let jSong = jonkeySong.animation[jonkeySong.frame]
 
     sprite.onload = function() {
@@ -370,44 +499,6 @@ class JonkeySong{
         jonkeySong.y,
         jonkeySong.w * 1.5, 
         jonkeySong.h * 1.5);
-
-      // ctx.drawImage(sprite,
-      //   barrel.sX,
-      //   barrel.sY,
-      //   barrel.w,
-      //   barrel.h,
-      //   barrel.x,
-      //   barrel.y,
-      //   barrel.w * 1.5,
-      //   barrel.h * 1.5);
-
-      // ctx.drawImage(sprite,
-      //   barrel.sX,
-      //   barrel.sY,
-      //   barrel.w,
-      //   barrel.h,
-      //   barrel.x - 15,
-      //   barrel.y,
-      //   barrel.w * 1.5,
-      //   barrel.h * 1.5);
-      // ctx.drawImage(sprite,
-      //   barrel.sX,
-      //   barrel.sY,
-      //   barrel.w,
-      //   barrel.h,
-      //   barrel.x,
-      //   barrel.y - 22,
-      //   barrel.w * 1.5,
-      //   barrel.h * 1.5);
-      // ctx.drawImage(sprite,
-      //   barrel.sX,
-      //   barrel.sY,
-      //   barrel.w,
-      //   barrel.h,
-      //   barrel.x - 15,
-      //   barrel.y - 22,
-      //   barrel.w * 1.5,
-      //   barrel.h * 1.5);
     }
   }
 }
@@ -486,7 +577,7 @@ class LevelOne{
           redSteel.h * 1.5);
         }
 
-      // FOURTH FLOOR
+      // FIFTH FLOOR
       let l;
       for (l = 1; l < 20; l++){
         ctx.drawImage(sprite,
@@ -500,7 +591,7 @@ class LevelOne{
           redSteel.h * 1.5);
       }
 
-      // THIRD FLOOR
+      // FOURTH FLOOR
       let m;
       for (m = 1; m < 20; m++){
         ctx.drawImage(sprite,
@@ -514,7 +605,7 @@ class LevelOne{
           redSteel.h * 1.5);
       }
 
-      // SECOND FLOOR
+      // THIRD FLOOR
       let n;
       for (n = 1; n < 20; n++) {
         ctx.drawImage(sprite,
@@ -528,7 +619,7 @@ class LevelOne{
           redSteel.h * 1.5);
       }
 
-      // THIRD FLOOR
+      // SECOND FLOOR
       let o;
       for (o = 1; o < 20; o++) {
         ctx.drawImage(sprite,
@@ -542,7 +633,7 @@ class LevelOne{
           redSteel.h * 1.5);
       }
 
-      // THIRD FLOOR
+      // FIRST FLOOR
       let p;
       for (p = 1; p < 20; p++) {
         ctx.drawImage(sprite,
@@ -565,11 +656,161 @@ class LevelOne{
         527,
         redSteel.w * 1.5,
         redSteel.h * 1.5);
+
+      // PRINCESS PLATFORM
+      let q;
+      for (q = 0; q < 3; q++) {
+        ctx.drawImage(sprite,
+          redSteel.sX,
+          redSteel.sY,
+          redSteel.w,
+          redSteel.h,
+          redSteel.x + 180 + (redSteel.w * 1.5) * q,
+          redSteel.y - 64,
+          redSteel.w * 1.5,
+          redSteel.h * 1.5);
+      }
     }
   }
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (LevelOne);
+
+/***/ }),
+
+/***/ "./src/plumber.js":
+/*!************************!*\
+  !*** ./src/plumber.js ***!
+  \************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+class Plumber{
+  constructor(game) {
+    this.game = game;
+    this.posX = 430;
+    this.posY = 503;
+    this.dX = 0;
+    this.dY = 0;
+    this.canJump = true;
+  }
+
+  draw(ctx){
+    const sprite = new Image();
+    sprite.src = "../img/sprites.png";
+
+    const plumberR = {
+      walkRightAnimation: [
+        { sX: 158, sY: 3 },
+        { sX: 176, sY: 4 },
+        { sX: 197, sY: 3 },
+        { sX: 176, sY: 4 },
+        { sX: 158, sY: 3 }
+      ],
+      x: this.posX,
+      y: this.posY,
+      w: 12,
+      h: 16,
+
+      frame: 0
+    }
+
+    const plumberL = {
+      walkLeftAnimation: [
+        { sX: 136, sY: 3 },
+        { sX: 115, sY: 4 },
+        { sX: 94, sY: 3 },
+        { sX: 115, sY: 4 },
+        { sX: 136, sY: 3 }
+      ],
+      x: this.posX,
+      y: this.posY,
+      w: 12,
+      h: 16,
+
+      frame: 0
+    };
+
+    let plumber = plumberL.walkLeftAnimation[plumberL.frame];
+
+    sprite.onload = function () {
+      ctx.drawImage(sprite,
+        plumber.sX,
+        plumber.sY,
+        plumberL.w,
+        plumberL.h,
+        plumberL.x,
+        plumberL.y,
+        plumberL.w * 1.5,
+        plumberL.h * 1.5);
+    }
+
+    if (this.posY < 504 && this.posX < 32) {
+      
+      // this.canJump = false;
+      this.posY += 1;
+      
+
+      // 
+    }
+    if (this.posY = 504) this.canJump = true;
+
+    if (this.posX < 0) this.posX = 0;
+    if (this.posX > 480) this.posX = 480 - plumberL.w*2;
+  }
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Plumber);
+
+/***/ }),
+
+/***/ "./src/princess.js":
+/*!*************************!*\
+  !*** ./src/princess.js ***!
+  \*************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+class Princess {
+  constructor(game) {
+    this.game = game;
+  }
+
+  draw(ctx) {
+    let sprite = new Image();
+    sprite.src = "../img/sprites.png";
+
+    const princess = {
+      sX: 158,
+      sY: 126,
+      sW: 15,
+      sH: 22,
+      dX: 246,
+      dY: 51,
+      dW: 15,
+      dH: 22
+    }
+
+    sprite.onload = function () {
+      ctx.drawImage(sprite,
+        princess.sX,
+        princess.sY,
+        princess.sW,
+        princess.sH,
+        princess.dX,
+        princess.dY,
+        princess.dW * 1.5,
+        princess.dH * 1.5);
+    }
+  }
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Princess);
 
 /***/ })
 

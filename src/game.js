@@ -1,6 +1,9 @@
 import JonkeySong from "./jonkey_song";
 import Barrel from "./barrel";
 import LevelOne from "./level_one";
+import Plumber from "./plumber";
+import FlameBarrel from "./flame_barrel";
+import Princess from "./princess";
 
 console.log("Webpack is working! game.js")
 
@@ -11,11 +14,17 @@ class Game {
     this.jonkeySong = new JonkeySong(this);
     this.barrel = new Barrel(this);
     this.levelOne = new LevelOne(this);
+    this.plumber = new Plumber(this);
+    this.flameBarrel = new FlameBarrel(this);
+    this.princess = new Princess(this);
   }
 
   drawBackground(ctx) {
     // "#70c5ce"; - SKY COLOR
     // "#86E18D"; - BRUSH COLOR
+
+    ctx.fillStyle = "skyblue";
+    ctx.fillRect(0, 0, this.width, this.height);
 
     // IMG SOURCE FOR BACKGROUND
     let bgImg = new Image();
@@ -58,10 +67,14 @@ class Game {
   }
 
   draw(ctx) {
+    // ctx.clearRect(0, 0, this.width, this.height);
     this.drawBackground(ctx);
     this.jonkeySong.draw(ctx);
     this.barrel.draw(ctx);
     this.levelOne.draw(ctx);
+    this.plumber.draw(ctx);
+    this.flameBarrel.draw(ctx);
+    this.princess.draw(ctx);
   }
 }
 

@@ -59,7 +59,7 @@ class LevelOne{
           redSteel.h * 1.5);
         }
 
-      // FOURTH FLOOR
+      // FIFTH FLOOR
       let l;
       for (l = 1; l < 20; l++){
         ctx.drawImage(sprite,
@@ -73,7 +73,7 @@ class LevelOne{
           redSteel.h * 1.5);
       }
 
-      // THIRD FLOOR
+      // FOURTH FLOOR
       let m;
       for (m = 1; m < 20; m++){
         ctx.drawImage(sprite,
@@ -87,7 +87,7 @@ class LevelOne{
           redSteel.h * 1.5);
       }
 
-      // SECOND FLOOR
+      // THIRD FLOOR
       let n;
       for (n = 1; n < 20; n++) {
         ctx.drawImage(sprite,
@@ -101,7 +101,7 @@ class LevelOne{
           redSteel.h * 1.5);
       }
 
-      // THIRD FLOOR
+      // SECOND FLOOR
       let o;
       for (o = 1; o < 20; o++) {
         ctx.drawImage(sprite,
@@ -115,7 +115,7 @@ class LevelOne{
           redSteel.h * 1.5);
       }
 
-      // THIRD FLOOR
+      // FIRST FLOOR
       let p;
       for (p = 1; p < 20; p++) {
         ctx.drawImage(sprite,
@@ -138,6 +138,20 @@ class LevelOne{
         527,
         redSteel.w * 1.5,
         redSteel.h * 1.5);
+
+      // PRINCESS PLATFORM
+      let q;
+      for (q = 0; q < 3; q++) {
+        ctx.drawImage(sprite,
+          redSteel.sX,
+          redSteel.sY,
+          redSteel.w,
+          redSteel.h,
+          redSteel.x + 180 + (redSteel.w * 1.5) * q,
+          redSteel.y - 64,
+          redSteel.w * 1.5,
+          redSteel.h * 1.5);
+      }
     }
   }
 }
