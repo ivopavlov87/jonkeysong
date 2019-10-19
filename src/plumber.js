@@ -5,7 +5,7 @@ class Plumber{
     this.posX = 430;
     this.posY = 503;
     this.dX = 0;
-    this.dY = 0;
+    this.dY = 9;
     this.canJump = true;
     this.frame = 0;
     this.direction = "left"
@@ -27,7 +27,7 @@ class Plumber{
       ],
       x: this.posX,
       y: this.posY,
-      w: 12,
+      w: 14,
       h: 16,
     }
 
@@ -71,7 +71,7 @@ class Plumber{
       );
     }
 
-    if (this.posX < 5) this.posX = 8;
+    if (this.posX < 5) this.posX = 5;
     
     if (this.posX > 455) this.posX = 455;
     if (this.posY > 503 && !this.canJump) this.canJump = true;
@@ -81,25 +81,30 @@ class Plumber{
 
   move(timeDelta){
     // debugger;
-    const normal = 1000 / 60
-    const velocityScale = timeDelta / normal;
-
-    const offsetX = this.dX * velocityScale;
-    const offsetY = this.dY * velocityScale;
-
-    this.posX += offsetX;
-    this.posY += offsetY;
-
-    // this.frame += 1
     if (this.frame > 4){
       this.frame = 0
     }
 
+    const normal = 1000 / 60
+    const velocityScale = timeDelta / normal;
+
+    const offsetX = this.dX * velocityScale;
+    const offsetY = this.dY * velocityScale / 2;
+
+    this.posX += offsetX;
+    this.posY += offsetY;
+
+
+
     if (this.posY < 0) this.posY = 0;
-    if (this.posY < 503 && this.dY === 0) this.posY += 10;
+    // if (this.posY < 503) this.dY += 1;
+    if (this.dY < 10) this.dY += 1;
+    if (this.dX === 0 && this.posY > 500) this.frame = 0;
     if (this.posY > 502) this.posY = 504;
-    if (this.posY > 630) this.posY = 630;
+    // if (this.posY > 630) this.posY = 630;
   }
 }
+
+window.Plumber;
 
 export default Plumber;

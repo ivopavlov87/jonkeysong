@@ -1,5 +1,4 @@
-console.log("game view is here!")
-
+// console.log("game view is here!")
 class GameView {
   constructor(game, ctx, canvas) {
     this.game = game;
@@ -9,15 +8,14 @@ class GameView {
     this.rightKey = false;
     this.leftKey = false;
     this.spacebar = false;
-    this.frameCount = 0
+    this.frameCount = 0;
+    this.jumpHeight = 0;
 
     this.loop = this.loop.bind(this)
   }
 
   start() {
     this.bindKeyHandlers();
-    this.game.drawBackground(this.ctx);
-    this.game.levelOne.draw(this.ctx);
 
     this.game.draw(this.ctx);
 
@@ -28,7 +26,7 @@ class GameView {
 
 
   loop(time){
-    console.log("inside the gameloop")
+    // console.log("inside the gameloop")
     const timeDelta = time - this.lastTime;
     this.frameCount += 1;
 
@@ -64,10 +62,12 @@ class GameView {
   keyDownHandler(e) {
     if (e.key === "ArrowRight" || e.key === "d") {
       this.rightKey = true;
-      console.log("arrow-right down");
-    } else if (e.key === "ArrowLeft" || e.key === "a") {
+      // console.log("arrow-right down");
+    } 
+    
+    if (e.key === "ArrowLeft" || e.key === "a") {
       this.leftKey = true
-      console.log("arrow-left down");
+      // console.log("arrow-left down");
     }
 
     if (e.key === " "){
@@ -75,32 +75,26 @@ class GameView {
     }
 
     if (e.key === "ArrowLeft" && this.leftKey) {
-      this.game.plumber.dX = -7;
+      this.game.plumber.dX = -3;
       this.game.plumber.direction = "left";
       this.game.plumber.frame += 1
     }
     if (e.key === "ArrowRight" && this.rightKey) {
-      this.game.plumber.dX = 7;
+      this.game.plumber.dX = 3;
       this.game.plumber.direction = "right";
       this.game.plumber.frame += 1
     }
 
-    if (this.spacebar){
-      this.game.plumber.frame = 2;
-    }
-
-    if (e.key === " " && this.spacebar && this.game.plumber.canJump) { // && this.game.plumber.jumpHeight < 50) {
-      this.game.plumber.jumpHeight += 50
-      if (this.game.plumber.jumpHeight < 51) this.game.plumber.dY = -50;
-      this.game.plumber.canJump = false;
+    if (e.key === " " && this.game.plumber.canJump) {
+        this.game.plumber.frame = 2;
+        this.game.plumber.dY -= 25; // jump height
+        this.game.plumber.canJump = false;
     } else if (!this.spacebar && this.game.plumber.posY <= 500){
       if (this.rightKey) {
         this.game.plumber.dX = 7;
       } else if (this.leftKey) {
         this.game.plumber.dX = -7;
       }
-    } else if (!this.spacebar && this.game.plumber.posY <= 500){
-      this.game.plumber.dY = 10;
     }
 
 
@@ -116,15 +110,9 @@ class GameView {
       this.leftKey = false;
       this.game.plumber.dX = 0;
     }
-
-    if (e.key === " "){
-      this.spacebar = false;
-      this.game.plumber.dY = 0
-    }
   }
 
   bindKeyHandlers() {
-    let gameV = this;
     document.addEventListener("keydown", (e) => this.keyDownHandler(e), false);
     document.addEventListener("keyup", (e) => this.keyUpHandler(e), false);
   }

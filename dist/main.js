@@ -298,7 +298,7 @@ class Game {
 
   draw(ctx) {
     // ctx.clearRect(0, 0, this.width, this.height);
-    console.log("this is the game draw")
+    // console.log("this is the game draw")
     this.drawBackground(ctx);
     this.jonkeySong.draw(ctx);
     this.flameBarrel.draw(ctx);
@@ -322,8 +322,7 @@ class Game {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-console.log("game view is here!")
-
+// console.log("game view is here!")
 class GameView {
   constructor(game, ctx, canvas) {
     this.game = game;
@@ -333,15 +332,14 @@ class GameView {
     this.rightKey = false;
     this.leftKey = false;
     this.spacebar = false;
-    this.frameCount = 0
+    this.frameCount = 0;
+    this.jumpHeight = 0;
 
     this.loop = this.loop.bind(this)
   }
 
   start() {
     this.bindKeyHandlers();
-    this.game.drawBackground(this.ctx);
-    this.game.levelOne.draw(this.ctx);
 
     this.game.draw(this.ctx);
 
@@ -352,7 +350,7 @@ class GameView {
 
 
   loop(time){
-    console.log("inside the gameloop")
+    // console.log("inside the gameloop")
     const timeDelta = time - this.lastTime;
     this.frameCount += 1;
 
@@ -388,10 +386,12 @@ class GameView {
   keyDownHandler(e) {
     if (e.key === "ArrowRight" || e.key === "d") {
       this.rightKey = true;
-      console.log("arrow-right down");
-    } else if (e.key === "ArrowLeft" || e.key === "a") {
+      // console.log("arrow-right down");
+    } 
+    
+    if (e.key === "ArrowLeft" || e.key === "a") {
       this.leftKey = true
-      console.log("arrow-left down");
+      // console.log("arrow-left down");
     }
 
     if (e.key === " "){
@@ -399,32 +399,26 @@ class GameView {
     }
 
     if (e.key === "ArrowLeft" && this.leftKey) {
-      this.game.plumber.dX = -7;
+      this.game.plumber.dX = -3;
       this.game.plumber.direction = "left";
       this.game.plumber.frame += 1
     }
     if (e.key === "ArrowRight" && this.rightKey) {
-      this.game.plumber.dX = 7;
+      this.game.plumber.dX = 3;
       this.game.plumber.direction = "right";
       this.game.plumber.frame += 1
     }
 
-    if (this.spacebar){
-      this.game.plumber.frame = 2;
-    }
-
-    if (e.key === " " && this.spacebar && this.game.plumber.canJump) { // && this.game.plumber.jumpHeight < 50) {
-      this.game.plumber.jumpHeight += 50
-      if (this.game.plumber.jumpHeight < 51) this.game.plumber.dY = -50;
-      this.game.plumber.canJump = false;
+    if (e.key === " " && this.game.plumber.canJump) {
+        this.game.plumber.frame = 2;
+        this.game.plumber.dY -= 25; // jump height
+        this.game.plumber.canJump = false;
     } else if (!this.spacebar && this.game.plumber.posY <= 500){
       if (this.rightKey) {
         this.game.plumber.dX = 7;
       } else if (this.leftKey) {
         this.game.plumber.dX = -7;
       }
-    } else if (!this.spacebar && this.game.plumber.posY <= 500){
-      this.game.plumber.dY = 10;
     }
 
 
@@ -440,15 +434,9 @@ class GameView {
       this.leftKey = false;
       this.game.plumber.dX = 0;
     }
-
-    if (e.key === " "){
-      this.spacebar = false;
-      this.game.plumber.dY = 0
-    }
   }
 
   bindKeyHandlers() {
-    let gameV = this;
     document.addEventListener("keydown", (e) => this.keyDownHandler(e), false);
     document.addEventListener("keyup", (e) => this.keyUpHandler(e), false);
   }
@@ -740,7 +728,7 @@ class Plumber{
     this.posX = 430;
     this.posY = 503;
     this.dX = 0;
-    this.dY = 0;
+    this.dY = 9;
     this.canJump = true;
     this.frame = 0;
     this.direction = "left"
@@ -762,7 +750,7 @@ class Plumber{
       ],
       x: this.posX,
       y: this.posY,
-      w: 12,
+      w: 14,
       h: 16,
     }
 
@@ -806,7 +794,7 @@ class Plumber{
       );
     }
 
-    if (this.posX < 5) this.posX = 8;
+    if (this.posX < 5) this.posX = 5;
     
     if (this.posX > 455) this.posX = 455;
     if (this.posY > 503 && !this.canJump) this.canJump = true;
@@ -816,26 +804,31 @@ class Plumber{
 
   move(timeDelta){
     // debugger;
-    const normal = 1000 / 60
-    const velocityScale = timeDelta / normal;
-
-    const offsetX = this.dX * velocityScale;
-    const offsetY = this.dY * velocityScale;
-
-    this.posX += offsetX;
-    this.posY += offsetY;
-
-    // this.frame += 1
     if (this.frame > 4){
       this.frame = 0
     }
 
+    const normal = 1000 / 60
+    const velocityScale = timeDelta / normal;
+
+    const offsetX = this.dX * velocityScale;
+    const offsetY = this.dY * velocityScale / 2;
+
+    this.posX += offsetX;
+    this.posY += offsetY;
+
+
+
     if (this.posY < 0) this.posY = 0;
-    if (this.posY < 503 && this.dY === 0) this.posY += 10;
+    // if (this.posY < 503) this.dY += 1;
+    if (this.dY < 10) this.dY += 1;
+    if (this.dX === 0 && this.posY > 500) this.frame = 0;
     if (this.posY > 502) this.posY = 504;
-    if (this.posY > 630) this.posY = 630;
+    // if (this.posY > 630) this.posY = 630;
   }
 }
+
+window.Plumber;
 
 /* harmony default export */ __webpack_exports__["default"] = (Plumber);
 

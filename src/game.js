@@ -62,7 +62,7 @@ class Game {
 
   draw(ctx) {
     // ctx.clearRect(0, 0, this.width, this.height);
-    console.log("this is the game draw")
+    // console.log("this is the game draw")
     this.drawBackground(ctx);
     this.jonkeySong.draw(ctx);
     this.flameBarrel.draw(ctx);
