@@ -1,11 +1,14 @@
 class LevelOne{
   constructor(game) {
     this.game = game;
+
+    this.sprite = new Image();
+    this.sprite.src = "../img/sprites.png";
   }
 
   draw(ctx){
-    let sprite = new Image();
-    sprite.src = "../img/sprites.png";
+    // let sprite = new Image();
+    // sprite.src = "../img/sprites.png";
 
     const redSteel = {
       sX: 222,
@@ -16,11 +19,11 @@ class LevelOne{
       y: 148
     }
 
-    sprite.onload = function() {
+    // sprite.onload = function() {
       // TOP FLOOR, PART 1
       let i;
       for (i = 0; i < 12; i++){
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
         redSteel.sX,
         redSteel.sY,
         redSteel.w,
@@ -34,7 +37,7 @@ class LevelOne{
       // TOP FLOOR, PART 2
       let j;
       for (j = 1; j < 5; j++){
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
           redSteel.sX,
           redSteel.sY,
           redSteel.w,
@@ -48,7 +51,7 @@ class LevelOne{
       // PENULTIMATE FLOOR
       let k;
       for (k = 1; k < 20; k++){
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
           redSteel.sX,
           redSteel.sY,
           redSteel.w,
@@ -62,7 +65,7 @@ class LevelOne{
       // FIFTH FLOOR
       let l;
       for (l = 1; l < 20; l++){
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
           redSteel.sX,
           redSteel.sY,
           redSteel.w,
@@ -76,7 +79,7 @@ class LevelOne{
       // FOURTH FLOOR
       let m;
       for (m = 1; m < 20; m++){
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
           redSteel.sX,
           redSteel.sY,
           redSteel.w,
@@ -90,7 +93,7 @@ class LevelOne{
       // THIRD FLOOR
       let n;
       for (n = 1; n < 20; n++) {
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
           redSteel.sX,
           redSteel.sY,
           redSteel.w,
@@ -104,7 +107,7 @@ class LevelOne{
       // SECOND FLOOR
       let o;
       for (o = 1; o < 20; o++) {
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
           redSteel.sX,
           redSteel.sY,
           redSteel.w,
@@ -118,7 +121,7 @@ class LevelOne{
       // FIRST FLOOR
       let p;
       for (p = 1; p < 20; p++) {
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
           redSteel.sX,
           redSteel.sY,
           redSteel.w,
@@ -129,7 +132,7 @@ class LevelOne{
           redSteel.h * 1.5);
       }
 
-      ctx.drawImage(sprite,
+      ctx.drawImage(this.sprite,
         redSteel.sX,
         redSteel.sY,
         redSteel.w,
@@ -142,7 +145,7 @@ class LevelOne{
       // PRINCESS PLATFORM
       let q;
       for (q = 0; q < 3; q++) {
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
           redSteel.sX,
           redSteel.sY,
           redSteel.w,
@@ -152,7 +155,7 @@ class LevelOne{
           redSteel.w * 1.5,
           redSteel.h * 1.5);
       }
-    }
+    // }
   }
 }
 

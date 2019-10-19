@@ -17,18 +17,21 @@ class Game {
     this.plumber = new Plumber(this);
     this.flameBarrel = new FlameBarrel(this);
     this.princess = new Princess(this);
+    this.bgImg = new Image();
+    this.bgImg.src = "../img/background-sprites.png";
+
   }
 
   drawBackground(ctx) {
     // "#70c5ce"; - SKY COLOR
     // "#86E18D"; - BRUSH COLOR
 
-    ctx.fillStyle = "skyblue";
-    ctx.fillRect(0, 0, this.width, this.height);
+    // ctx.fillStyle = "skyblue";
+    // ctx.fillRect(0, 0, this.width, this.height);
 
     // IMG SOURCE FOR BACKGROUND
-    let bgImg = new Image();
-    bgImg.src = "../img/background-sprites.png";
+    // let bgImg = new Image();
+    // bgImg.src = "../img/background-sprites.png";
 
     // SLICING OUT BUILDINGS, CLOUDS, AND BRUSH
     const bg = {
@@ -50,30 +53,31 @@ class Game {
       y: this.height - 112
     }
 
-    bgImg.onload = function(){
+    // bgImg.onload = function(){
       //  BUILDINGS, CLOUDS, AND BRUSH
-      ctx.drawImage(bgImg, bg.sX, bg.sY, bg.w, bg.h, bg.x, bg.y,
+      ctx.drawImage(this.bgImg, bg.sX, bg.sY, bg.w, bg.h, bg.x, bg.y,
       bg.w, bg.h);
 
-      ctx.drawImage(bgImg, bg.sX, bg.sY, bg.w, bg.h, bg.x + bg.w, bg.y, bg.w, bg.h);
+      ctx.drawImage(this.bgImg, bg.sX, bg.sY, bg.w, bg.h, bg.x + bg.w, bg.y, bg.w, bg.h);
 
       // FOREGROUND
-      ctx.drawImage(bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x, fg.y,
+      ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x, fg.y,
         fg.w, fg.h);
 
-      ctx.drawImage(bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x + fg.w, fg.y, fg.w, fg.h)
-      ctx.drawImage(bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x + fg.w * 2, fg.y, fg.w, fg.h)
-    }
+      ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x + fg.w, fg.y, fg.w, fg.h)
+      ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x + fg.w * 2, fg.y, fg.w, fg.h)
+    // }
   }
 
   draw(ctx) {
     // ctx.clearRect(0, 0, this.width, this.height);
+    console.log("this is the game draw")
     this.drawBackground(ctx);
     this.jonkeySong.draw(ctx);
+    this.flameBarrel.draw(ctx);
+    this.plumber.draw(ctx);
     this.barrel.draw(ctx);
     this.levelOne.draw(ctx);
-    this.plumber.draw(ctx);
-    this.flameBarrel.draw(ctx);
     this.princess.draw(ctx);
   }
 }

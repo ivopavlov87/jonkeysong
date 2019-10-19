@@ -1,26 +1,53 @@
 console.log("game view is here!")
 
 class GameView {
-  constructor(game, ctx) {
+  constructor(game, ctx, canvas) {
     this.game = game;
     this.ctx = ctx;
+    this.canvas = canvas;
     this.interval = "";
     this.rightKey = false;
     this.leftKey = false;
     this.spacebar = false;
+    this.frameCount = 0
+
+    this.loop = this.loop.bind(this)
   }
 
   start() {
-    let that = this;
-    that.bindKeyHandlers();
+    this.bindKeyHandlers();
     this.game.drawBackground(this.ctx);
     this.game.levelOne.draw(this.ctx);
-    // requestAnimationFrame(start());
-    this.interval = setInterval(function () {
-      // this.ctx.clearRect(0, 0, game.width, game.height);
-      that.game.draw(that.ctx);
-    }, 1000/60)
+
+    this.game.draw(this.ctx);
+
+    this.lastTime = 0;
+    requestAnimationFrame(this.loop.bind(this));
     
+  }
+
+
+  loop(time){
+    console.log("inside the gameloop")
+    const timeDelta = time - this.lastTime;
+    this.frameCount += 1;
+
+    if (this.frameCount > 50){ 
+      this.game.jonkeySong.frame += 1;
+      this.game.flameBarrel.frame += 1;
+      this.frameCount = 0;
+    }
+
+    if (this.game.jonkeySong.frame > 4) this.game.jonkeySong.frame = 0;
+    if (this.game.flameBarrel.frame > 1) this.game.flameBarrel.frame = 0;
+
+    this.ctx.clearRect(0, 0, this.game.width, this.game.height);
+
+    this.game.plumber.move(timeDelta)
+    this.game.draw(this.ctx);
+    
+    this.lastTime = time
+    requestAnimationFrame(this.loop.bind(this))
   }
 
   stop() {
@@ -46,46 +73,53 @@ class GameView {
 
     if (e.key === " "){
       this.spacebar = true;
-      console.log("space pushed")
-      console.log(this.spacebar);
     }
 
     if (e.key === "ArrowLeft" && this.leftKey) {
-      this.game.plumber.posX -= 7;
+      this.game.plumber.dX = -7;
+      this.game.plumber.direction = "left";
+      this.game.plumber.frame += 1
     }
     if (e.key === "ArrowRight" && this.rightKey) {
-      this.game.plumber.posX += 7;
+      this.game.plumber.dX = 7;
+      this.game.plumber.direction = "right";
+      this.game.plumber.frame += 1
+    }
+
+    if (this.spacebar){
+      this.game.plumber.frame = 2;
     }
 
     if (e.key === " " && this.spacebar && this.game.plumber.canJump) {
-      this.game.plumber.posY -= 50;
+      this.game.plumber.dY = -50;
       this.game.plumber.canJump = false;
     } else if (!this.spacebar && this.game.plumber.posY <= 500){
       if (this.rightKey) {
-        this.game.plumber.posX += 7;
+        this.game.plumber.dX = 7;
       } else if (this.leftKey) {
-        this.game.plumber.posX -= 7;
+        this.game.plumber.dX = -7;
       }
     } else if (!this.spacebar && this.game.plumber.posY <= 500){
-      this.game.plumber.posY += 10;
+      this.game.plumber.dY = 10;
     }
 
-    console.log(e.keyCode);
 
   }
 
   keyUpHandler(e) {
     if (e.key === "ArrowRight" || e.key === "d") {
+      this.game.plumber.direction = "right";
       this.rightKey = false;
-      console.log("arrow-right up");
+      this.game.plumber.dX = 0;
     } else if (e.key === "ArrowLeft" || e.key === "a") {
-      this.leftKey = false
-      console.log("arrow-left up");
+      this.game.plumber.direction = "left";
+      this.leftKey = false;
+      this.game.plumber.dX = 0;
     }
 
     if (e.key === " "){
       this.spacebar = false;
-      console.log("spacebar up")
+      this.game.plumber.dY = 0
     }
   }
 

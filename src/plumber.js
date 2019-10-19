@@ -7,12 +7,15 @@ class Plumber{
     this.dX = 0;
     this.dY = 0;
     this.canJump = true;
+    this.frame = 0;
+    this.direction = "left"
+
+    this.sprite = new Image();
+    this.sprite.src = "../img/sprites.png";
   }
 
   draw(ctx){
-    const sprite = new Image();
-    sprite.src = "../img/sprites.png";
-
+    // debugger;
     const plumberR = {
       walkRightAnimation: [
         { sX: 158, sY: 3 },
@@ -45,10 +48,10 @@ class Plumber{
       frame: 0
     };
 
-    let plumber = plumberL.walkLeftAnimation[plumberL.frame];
+    let plumber = this.direction === "left" ? plumberL.walkLeftAnimation[this.frame] : plumberR.walkRightAnimation[this.frame];
 
-    sprite.onload = function () {
-      ctx.drawImage(sprite,
+    if (this.direction === "left"){
+      ctx.drawImage(this.sprite,
         plumber.sX,
         plumber.sY,
         plumberL.w,
@@ -56,21 +59,59 @@ class Plumber{
         plumberL.x,
         plumberL.y,
         plumberL.w * 1.5,
-        plumberL.h * 1.5);
+        plumberL.h * 1.5
+      );
+    } else if (this.direction === "right") {
+      ctx.drawImage(this.sprite,
+        plumber.sX,
+        plumber.sY,
+        plumberR.w,
+        plumberR.h,
+        plumberR.x,
+        plumberR.y,
+        plumberR.w * 1.5,
+        plumberR.h * 1.5
+      );
     }
 
-    if (this.posY < 504 && this.posX < 32) {
+    // if (this.posY < 504 && this.posX < 32) {
       
       // this.canJump = false;
-      this.posY += 1;
-      
+      // this.posY += 1;
+      // if (this.posY = 503) this.canJump = true;
 
       // 
-    }
-    if (this.posY = 504) this.canJump = true;
+    // }
+    // if (this.posY = 504) this.canJump = true;
 
-    if (this.posX < 0) this.posX = 0;
-    if (this.posX > 480) this.posX = 480 - plumberL.w*2;
+    if (this.posX < 5) this.posX = 8;
+    
+    if (this.posX > 455) this.posX = 455;
+    if (this.posY > 503 && !this.canJump) this.canJump = true;
+  }
+
+  
+
+  move(timeDelta){
+    // debugger;
+    const normal = 1000 / 60
+    const velocityScale = timeDelta / normal;
+
+    const offsetX = this.dX * velocityScale;
+    const offsetY = this.dY * velocityScale;
+
+    this.posX += offsetX;
+    this.posY += offsetY;
+
+    // this.frame += 1
+    if (this.frame > 4){
+      this.frame = 0
+    }
+
+    if (this.posY < 0) this.posY = 0;
+    if (this.posY < 503 && this.dY === 0) this.posY += 10;
+    if (this.posY > 502) this.posY = 504;
+    if (this.posY > 630) this.posY = 630;
   }
 }
 

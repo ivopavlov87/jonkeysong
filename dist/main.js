@@ -98,11 +98,14 @@ __webpack_require__.r(__webpack_exports__);
 class Barrel{
   constructor(game) {
     this.game = game;
+
+    this.sprite = new Image();
+    this.sprite.src = "../img/sprites.png";
   }
 
   draw(ctx) {
-    let sprite = new Image();
-    sprite.src = "../img/sprites.png";
+    // let sprite = new Image();
+    // sprite.src = "../img/sprites.png";
 
     const barrel = {
       sX: 113,
@@ -113,9 +116,9 @@ class Barrel{
       y: 125
     }
 
-    sprite.onload = function(){
+    // sprite.onload = function(){
       // START OF BARREL SUPPLY
-      ctx.drawImage(sprite,
+      ctx.drawImage(this.sprite,
         barrel.sX,
         barrel.sY,
         barrel.w,
@@ -124,7 +127,7 @@ class Barrel{
         barrel.y,
         barrel.w * 1.5,
         barrel.h * 1.5);
-      ctx.drawImage(sprite,
+      ctx.drawImage(this.sprite,
         barrel.sX,
         barrel.sY,
         barrel.w,
@@ -133,7 +136,7 @@ class Barrel{
         barrel.y,
         barrel.w * 1.5,
         barrel.h * 1.5);
-      ctx.drawImage(sprite,
+      ctx.drawImage(this.sprite,
         barrel.sX,
         barrel.sY,
         barrel.w,
@@ -142,7 +145,7 @@ class Barrel{
         barrel.y - 22,
         barrel.w * 1.5,
         barrel.h * 1.5);
-      ctx.drawImage(sprite,
+      ctx.drawImage(this.sprite,
         barrel.sX,
         barrel.sY,
         barrel.w,
@@ -152,7 +155,7 @@ class Barrel{
         barrel.w * 1.5,
         barrel.h * 1.5);
       // END OF BARREL SUPPLY
-    }
+    // }
   }
 }
 
@@ -172,16 +175,20 @@ __webpack_require__.r(__webpack_exports__);
 class FlameBarrel {
   constructor(game) {
     this.game = game;
+    this.frame = 0;
+
+    this.sprite = new Image();
+    this.sprite.src = "../img/sprites.png";
   }
 
   draw(ctx){
-    const sprite = new Image();
-    sprite.src = "../img/sprites.png";
+    // const sprite = new Image();
+    // sprite.src = "../img/sprites.png";
 
     const flickerBarrel = {
       flickerAnimation: [
         { sX: 125, sY: 256 },
-        { sX: 144, sY: 246 }
+        { sX: 144, sY: 256 }
       ],
       x: 456,
       y: 491,
@@ -191,10 +198,10 @@ class FlameBarrel {
       frame: 0
     };
 
-    let flicker = flickerBarrel.flickerAnimation[flickerBarrel.frame];
+    let flicker = flickerBarrel.flickerAnimation[this.frame];
 
-    sprite.onload = function () {
-      ctx.drawImage(sprite,
+    // sprite.onload = function () {
+      ctx.drawImage(this.sprite,
         flicker.sX,
         flicker.sY,
         flickerBarrel.w,
@@ -203,7 +210,7 @@ class FlameBarrel {
         flickerBarrel.y,
         flickerBarrel.w * 1.5,
         flickerBarrel.h * 1.5);
-    }
+    // }
 
   }
 }
@@ -246,18 +253,21 @@ class Game {
     this.plumber = new _plumber__WEBPACK_IMPORTED_MODULE_3__["default"](this);
     this.flameBarrel = new _flame_barrel__WEBPACK_IMPORTED_MODULE_4__["default"](this);
     this.princess = new _princess__WEBPACK_IMPORTED_MODULE_5__["default"](this);
+    this.bgImg = new Image();
+    this.bgImg.src = "../img/background-sprites.png";
+
   }
 
   drawBackground(ctx) {
     // "#70c5ce"; - SKY COLOR
     // "#86E18D"; - BRUSH COLOR
 
-    ctx.fillStyle = "skyblue";
-    ctx.fillRect(0, 0, this.width, this.height);
+    // ctx.fillStyle = "skyblue";
+    // ctx.fillRect(0, 0, this.width, this.height);
 
     // IMG SOURCE FOR BACKGROUND
-    let bgImg = new Image();
-    bgImg.src = "../img/background-sprites.png";
+    // let bgImg = new Image();
+    // bgImg.src = "../img/background-sprites.png";
 
     // SLICING OUT BUILDINGS, CLOUDS, AND BRUSH
     const bg = {
@@ -279,30 +289,31 @@ class Game {
       y: this.height - 112
     }
 
-    bgImg.onload = function(){
+    // bgImg.onload = function(){
       //  BUILDINGS, CLOUDS, AND BRUSH
-      ctx.drawImage(bgImg, bg.sX, bg.sY, bg.w, bg.h, bg.x, bg.y,
+      ctx.drawImage(this.bgImg, bg.sX, bg.sY, bg.w, bg.h, bg.x, bg.y,
       bg.w, bg.h);
 
-      ctx.drawImage(bgImg, bg.sX, bg.sY, bg.w, bg.h, bg.x + bg.w, bg.y, bg.w, bg.h);
+      ctx.drawImage(this.bgImg, bg.sX, bg.sY, bg.w, bg.h, bg.x + bg.w, bg.y, bg.w, bg.h);
 
       // FOREGROUND
-      ctx.drawImage(bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x, fg.y,
+      ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x, fg.y,
         fg.w, fg.h);
 
-      ctx.drawImage(bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x + fg.w, fg.y, fg.w, fg.h)
-      ctx.drawImage(bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x + fg.w * 2, fg.y, fg.w, fg.h)
-    }
+      ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x + fg.w, fg.y, fg.w, fg.h)
+      ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x + fg.w * 2, fg.y, fg.w, fg.h)
+    // }
   }
 
   draw(ctx) {
     // ctx.clearRect(0, 0, this.width, this.height);
+    console.log("this is the game draw")
     this.drawBackground(ctx);
     this.jonkeySong.draw(ctx);
+    this.flameBarrel.draw(ctx);
+    this.plumber.draw(ctx);
     this.barrel.draw(ctx);
     this.levelOne.draw(ctx);
-    this.plumber.draw(ctx);
-    this.flameBarrel.draw(ctx);
     this.princess.draw(ctx);
   }
 }
@@ -323,26 +334,53 @@ __webpack_require__.r(__webpack_exports__);
 console.log("game view is here!")
 
 class GameView {
-  constructor(game, ctx) {
+  constructor(game, ctx, canvas) {
     this.game = game;
     this.ctx = ctx;
+    this.canvas = canvas;
     this.interval = "";
     this.rightKey = false;
     this.leftKey = false;
     this.spacebar = false;
+    this.frameCount = 0
+
+    this.loop = this.loop.bind(this)
   }
 
   start() {
-    let that = this;
-    that.bindKeyHandlers();
+    this.bindKeyHandlers();
     this.game.drawBackground(this.ctx);
     this.game.levelOne.draw(this.ctx);
-    // requestAnimationFrame(start());
-    this.interval = setInterval(function () {
-      // this.ctx.clearRect(0, 0, game.width, game.height);
-      that.game.draw(that.ctx);
-    }, 1000/60)
+
+    this.game.draw(this.ctx);
+
+    this.lastTime = 0;
+    requestAnimationFrame(this.loop.bind(this));
     
+  }
+
+
+  loop(time){
+    console.log("inside the gameloop")
+    const timeDelta = time - this.lastTime;
+    this.frameCount += 1;
+
+    if (this.frameCount > 50){ 
+      this.game.jonkeySong.frame += 1;
+      this.game.flameBarrel.frame += 1;
+      this.frameCount = 0;
+    }
+
+    if (this.game.jonkeySong.frame > 4) this.game.jonkeySong.frame = 0;
+    if (this.game.flameBarrel.frame > 1) this.game.flameBarrel.frame = 0;
+
+    this.ctx.clearRect(0, 0, this.game.width, this.game.height);
+
+    this.game.plumber.move(timeDelta)
+    this.game.draw(this.ctx);
+    
+    this.lastTime = time
+    requestAnimationFrame(this.loop.bind(this))
   }
 
   stop() {
@@ -368,46 +406,53 @@ class GameView {
 
     if (e.key === " "){
       this.spacebar = true;
-      console.log("space pushed")
-      console.log(this.spacebar);
     }
 
     if (e.key === "ArrowLeft" && this.leftKey) {
-      this.game.plumber.posX -= 7;
+      this.game.plumber.dX = -7;
+      this.game.plumber.direction = "left";
+      this.game.plumber.frame += 1
     }
     if (e.key === "ArrowRight" && this.rightKey) {
-      this.game.plumber.posX += 7;
+      this.game.plumber.dX = 7;
+      this.game.plumber.direction = "right";
+      this.game.plumber.frame += 1
+    }
+
+    if (this.spacebar){
+      this.game.plumber.frame = 2;
     }
 
     if (e.key === " " && this.spacebar && this.game.plumber.canJump) {
-      this.game.plumber.posY -= 50;
+      this.game.plumber.dY = -50;
       this.game.plumber.canJump = false;
     } else if (!this.spacebar && this.game.plumber.posY <= 500){
       if (this.rightKey) {
-        this.game.plumber.posX += 7;
+        this.game.plumber.dX = 7;
       } else if (this.leftKey) {
-        this.game.plumber.posX -= 7;
+        this.game.plumber.dX = -7;
       }
     } else if (!this.spacebar && this.game.plumber.posY <= 500){
-      this.game.plumber.posY += 10;
+      this.game.plumber.dY = 10;
     }
 
-    console.log(e.keyCode);
 
   }
 
   keyUpHandler(e) {
     if (e.key === "ArrowRight" || e.key === "d") {
+      this.game.plumber.direction = "right";
       this.rightKey = false;
-      console.log("arrow-right up");
+      this.game.plumber.dX = 0;
     } else if (e.key === "ArrowLeft" || e.key === "a") {
-      this.leftKey = false
-      console.log("arrow-left up");
+      this.game.plumber.direction = "left";
+      this.leftKey = false;
+      this.game.plumber.dX = 0;
     }
 
     if (e.key === " "){
       this.spacebar = false;
-      console.log("spacebar up")
+      this.game.plumber.dY = 0
     }
   }
 
@@ -446,7 +491,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
   console.log("This is inside the index.js file")
 
-  new _game_view__WEBPACK_IMPORTED_MODULE_1__["default"](game, ctx).start();
+  
+  new _game_view__WEBPACK_IMPORTED_MODULE_1__["default"](game, ctx, canvas).start();
 })
 
 /***/ }),
@@ -464,11 +510,15 @@ __webpack_require__.r(__webpack_exports__);
 class JonkeySong{
   constructor(game){
     this.game = game;
+    this.frame = 0
+
+    this.sprite = new Image();
+    this.sprite.src = "../img/sprites.png";
   }
 
   draw(ctx){
-    let sprite = new Image();
-    sprite.src = "../img/sprites.png";
+    // let sprite = new Image();
+    // sprite.src = "../img/sprites.png";
 
     const jonkeySong = {
       animation: [
@@ -483,14 +533,14 @@ class JonkeySong{
       h: 32,
       x: 100,
       y: 100,
-
-      frame: 0,
     }
 
-    let jSong = jonkeySong.animation[jonkeySong.frame]
+    // if (this.frame = 2) jonkeySong.animation.w = 43;
 
-    sprite.onload = function() {
-      ctx.drawImage(sprite, 
+    let jSong = jonkeySong.animation[this.frame]
+
+    // sprite.onload = function() {
+      ctx.drawImage(this.sprite, 
         jSong.sX, 
         jSong.sY, 
         jonkeySong.w, 
@@ -499,7 +549,10 @@ class JonkeySong{
         jonkeySong.y,
         jonkeySong.w * 1.5, 
         jonkeySong.h * 1.5);
-    }
+
+
+      // if (this.frame > 4) this.frame = 0;
+    // }
   }
 }
 
@@ -519,11 +572,14 @@ __webpack_require__.r(__webpack_exports__);
 class LevelOne{
   constructor(game) {
     this.game = game;
+
+    this.sprite = new Image();
+    this.sprite.src = "../img/sprites.png";
   }
 
   draw(ctx){
-    let sprite = new Image();
-    sprite.src = "../img/sprites.png";
+    // let sprite = new Image();
+    // sprite.src = "../img/sprites.png";
 
     const redSteel = {
       sX: 222,
@@ -534,11 +590,11 @@ class LevelOne{
       y: 148
     }
 
-    sprite.onload = function() {
+    // sprite.onload = function() {
       // TOP FLOOR, PART 1
       let i;
       for (i = 0; i < 12; i++){
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
         redSteel.sX,
         redSteel.sY,
         redSteel.w,
@@ -552,7 +608,7 @@ class LevelOne{
       // TOP FLOOR, PART 2
       let j;
       for (j = 1; j < 5; j++){
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
           redSteel.sX,
           redSteel.sY,
           redSteel.w,
@@ -566,7 +622,7 @@ class LevelOne{
       // PENULTIMATE FLOOR
       let k;
       for (k = 1; k < 20; k++){
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
           redSteel.sX,
           redSteel.sY,
           redSteel.w,
@@ -580,7 +636,7 @@ class LevelOne{
       // FIFTH FLOOR
       let l;
       for (l = 1; l < 20; l++){
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
           redSteel.sX,
           redSteel.sY,
           redSteel.w,
@@ -594,7 +650,7 @@ class LevelOne{
       // FOURTH FLOOR
       let m;
       for (m = 1; m < 20; m++){
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
           redSteel.sX,
           redSteel.sY,
           redSteel.w,
@@ -608,7 +664,7 @@ class LevelOne{
       // THIRD FLOOR
       let n;
       for (n = 1; n < 20; n++) {
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
           redSteel.sX,
           redSteel.sY,
           redSteel.w,
@@ -622,7 +678,7 @@ class LevelOne{
       // SECOND FLOOR
       let o;
       for (o = 1; o < 20; o++) {
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
           redSteel.sX,
           redSteel.sY,
           redSteel.w,
@@ -636,7 +692,7 @@ class LevelOne{
       // FIRST FLOOR
       let p;
       for (p = 1; p < 20; p++) {
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
           redSteel.sX,
           redSteel.sY,
           redSteel.w,
@@ -647,7 +703,7 @@ class LevelOne{
           redSteel.h * 1.5);
       }
 
-      ctx.drawImage(sprite,
+      ctx.drawImage(this.sprite,
         redSteel.sX,
         redSteel.sY,
         redSteel.w,
@@ -660,7 +716,7 @@ class LevelOne{
       // PRINCESS PLATFORM
       let q;
       for (q = 0; q < 3; q++) {
-        ctx.drawImage(sprite,
+        ctx.drawImage(this.sprite,
           redSteel.sX,
           redSteel.sY,
           redSteel.w,
@@ -670,7 +726,7 @@ class LevelOne{
           redSteel.w * 1.5,
           redSteel.h * 1.5);
       }
-    }
+    // }
   }
 }
 
@@ -696,12 +752,15 @@ class Plumber{
     this.dX = 0;
     this.dY = 0;
     this.canJump = true;
+    this.frame = 0;
+    this.direction = "left"
+
+    this.sprite = new Image();
+    this.sprite.src = "../img/sprites.png";
   }
 
   draw(ctx){
-    const sprite = new Image();
-    sprite.src = "../img/sprites.png";
-
+    // debugger;
     const plumberR = {
       walkRightAnimation: [
         { sX: 158, sY: 3 },
@@ -734,10 +793,10 @@ class Plumber{
       frame: 0
     };
 
-    let plumber = plumberL.walkLeftAnimation[plumberL.frame];
+    let plumber = this.direction === "left" ? plumberL.walkLeftAnimation[this.frame] : plumberR.walkRightAnimation[this.frame];
 
-    sprite.onload = function () {
-      ctx.drawImage(sprite,
+    if (this.direction === "left"){
+      ctx.drawImage(this.sprite,
         plumber.sX,
         plumber.sY,
         plumberL.w,
@@ -745,21 +804,59 @@ class Plumber{
         plumberL.x,
         plumberL.y,
         plumberL.w * 1.5,
-        plumberL.h * 1.5);
+        plumberL.h * 1.5
+      );
+    } else if (this.direction === "right") {
+      ctx.drawImage(this.sprite,
+        plumber.sX,
+        plumber.sY,
+        plumberR.w,
+        plumberR.h,
+        plumberR.x,
+        plumberR.y,
+        plumberR.w * 1.5,
+        plumberR.h * 1.5
+      );
     }
 
-    if (this.posY < 504 && this.posX < 32) {
+    // if (this.posY < 504 && this.posX < 32) {
       
       // this.canJump = false;
-      this.posY += 1;
-      
+      // this.posY += 1;
+      // if (this.posY = 503) this.canJump = true;
 
       // 
-    }
-    if (this.posY = 504) this.canJump = true;
+    // }
+    // if (this.posY = 504) this.canJump = true;
 
-    if (this.posX < 0) this.posX = 0;
-    if (this.posX > 480) this.posX = 480 - plumberL.w*2;
+    if (this.posX < 5) this.posX = 8;
+    
+    if (this.posX > 455) this.posX = 455;
+    if (this.posY > 503 && !this.canJump) this.canJump = true;
+  }
+
+  
+
+  move(timeDelta){
+    // debugger;
+    const normal = 1000 / 60
+    const velocityScale = timeDelta / normal;
+
+    const offsetX = this.dX * velocityScale;
+    const offsetY = this.dY * velocityScale;
+
+    this.posX += offsetX;
+    this.posY += offsetY;
+
+    // this.frame += 1
+    if (this.frame > 4){
+      this.frame = 0
+    }
+
+    if (this.posY < 0) this.posY = 0;
+    if (this.posY < 503 && this.dY === 0) this.posY += 10;
+    if (this.posY > 502) this.posY = 504;
+    if (this.posY > 630) this.posY = 630;
   }
 }
 
@@ -779,11 +876,16 @@ __webpack_require__.r(__webpack_exports__);
 class Princess {
   constructor(game) {
     this.game = game;
+
+    this.sprite = new Image();
+    this.sprite.src = "../img/sprites.png";
   }
 
   draw(ctx) {
-    let sprite = new Image();
-    sprite.src = "../img/sprites.png";
+    // let sprite = new Image();
+    // sprite.src = "../img/sprites.png";
+    
+    // debugger;
 
     const princess = {
       sX: 158,
@@ -796,8 +898,9 @@ class Princess {
       dH: 22
     }
 
-    sprite.onload = function () {
-      ctx.drawImage(sprite,
+    // sprite.onload = function () {
+      // debugger;
+      ctx.drawImage(this.sprite,
         princess.sX,
         princess.sY,
         princess.sW,
@@ -806,7 +909,7 @@ class Princess {
         princess.dY,
         princess.dW * 1.5,
         princess.dH * 1.5);
-    }
+    // }
   }
 }
 

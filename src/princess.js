@@ -1,11 +1,16 @@
 class Princess {
   constructor(game) {
     this.game = game;
+
+    this.sprite = new Image();
+    this.sprite.src = "../img/sprites.png";
   }
 
   draw(ctx) {
-    let sprite = new Image();
-    sprite.src = "../img/sprites.png";
+    // let sprite = new Image();
+    // sprite.src = "../img/sprites.png";
+    
+    // debugger;
 
     const princess = {
       sX: 158,
@@ -18,8 +23,9 @@ class Princess {
       dH: 22
     }
 
-    sprite.onload = function () {
-      ctx.drawImage(sprite,
+    // sprite.onload = function () {
+      // debugger;
+      ctx.drawImage(this.sprite,
         princess.sX,
         princess.sY,
         princess.sW,
@@ -28,7 +34,7 @@ class Princess {
         princess.dY,
         princess.dW * 1.5,
         princess.dH * 1.5);
-    }
+    // }
   }
 }
 

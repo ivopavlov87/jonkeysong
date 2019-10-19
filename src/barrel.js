@@ -1,11 +1,14 @@
 class Barrel{
   constructor(game) {
     this.game = game;
+
+    this.sprite = new Image();
+    this.sprite.src = "../img/sprites.png";
   }
 
   draw(ctx) {
-    let sprite = new Image();
-    sprite.src = "../img/sprites.png";
+    // let sprite = new Image();
+    // sprite.src = "../img/sprites.png";
 
     const barrel = {
       sX: 113,
@@ -16,9 +19,9 @@ class Barrel{
       y: 125
     }
 
-    sprite.onload = function(){
+    // sprite.onload = function(){
       // START OF BARREL SUPPLY
-      ctx.drawImage(sprite,
+      ctx.drawImage(this.sprite,
         barrel.sX,
         barrel.sY,
         barrel.w,
@@ -27,7 +30,7 @@ class Barrel{
         barrel.y,
         barrel.w * 1.5,
         barrel.h * 1.5);
-      ctx.drawImage(sprite,
+      ctx.drawImage(this.sprite,
         barrel.sX,
         barrel.sY,
         barrel.w,
@@ -36,7 +39,7 @@ class Barrel{
         barrel.y,
         barrel.w * 1.5,
         barrel.h * 1.5);
-      ctx.drawImage(sprite,
+      ctx.drawImage(this.sprite,
         barrel.sX,
         barrel.sY,
         barrel.w,
@@ -45,7 +48,7 @@ class Barrel{
         barrel.y - 22,
         barrel.w * 1.5,
         barrel.h * 1.5);
-      ctx.drawImage(sprite,
+      ctx.drawImage(this.sprite,
         barrel.sX,
         barrel.sY,
         barrel.w,
@@ -55,7 +58,7 @@ class Barrel{
         barrel.w * 1.5,
         barrel.h * 1.5);
       // END OF BARREL SUPPLY
-    }
+    // }
   }
 }
 

@@ -2,11 +2,15 @@
 class JonkeySong{
   constructor(game){
     this.game = game;
+    this.frame = 0
+
+    this.sprite = new Image();
+    this.sprite.src = "../img/sprites.png";
   }
 
   draw(ctx){
-    let sprite = new Image();
-    sprite.src = "../img/sprites.png";
+    // let sprite = new Image();
+    // sprite.src = "../img/sprites.png";
 
     const jonkeySong = {
       animation: [
@@ -21,14 +25,14 @@ class JonkeySong{
       h: 32,
       x: 100,
       y: 100,
-
-      frame: 0,
     }
 
-    let jSong = jonkeySong.animation[jonkeySong.frame]
+    // if (this.frame = 2) jonkeySong.animation.w = 43;
 
-    sprite.onload = function() {
-      ctx.drawImage(sprite, 
+    let jSong = jonkeySong.animation[this.frame]
+
+    // sprite.onload = function() {
+      ctx.drawImage(this.sprite, 
         jSong.sX, 
         jSong.sY, 
         jonkeySong.w, 
@@ -37,7 +41,10 @@ class JonkeySong{
         jonkeySong.y,
         jonkeySong.w * 1.5, 
         jonkeySong.h * 1.5);
-    }
+
+
+      // if (this.frame > 4) this.frame = 0;
+    // }
   }
 }
 

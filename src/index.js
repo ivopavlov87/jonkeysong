@@ -11,5 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
   
   console.log("This is inside the index.js file")
 
-  new GameView(game, ctx).start();
+  
+  new GameView(game, ctx, canvas).start();
 })
