@@ -26,13 +26,6 @@ class Game {
     // "#70c5ce"; - SKY COLOR
     // "#86E18D"; - BRUSH COLOR
 
-    // ctx.fillStyle = "skyblue";
-    // ctx.fillRect(0, 0, this.width, this.height);
-
-    // IMG SOURCE FOR BACKGROUND
-    // let bgImg = new Image();
-    // bgImg.src = "../img/background-sprites.png";
-
     // SLICING OUT BUILDINGS, CLOUDS, AND BRUSH
     const bg = {
       sX: 0,
@@ -53,20 +46,18 @@ class Game {
       y: this.height - 112
     }
 
-    // bgImg.onload = function(){
-      //  BUILDINGS, CLOUDS, AND BRUSH
-      ctx.drawImage(this.bgImg, bg.sX, bg.sY, bg.w, bg.h, bg.x, bg.y,
-      bg.w, bg.h);
+    //  BUILDINGS, CLOUDS, AND BRUSH
+    ctx.drawImage(this.bgImg, bg.sX, bg.sY, bg.w, bg.h, bg.x, bg.y,
+    bg.w, bg.h);
 
-      ctx.drawImage(this.bgImg, bg.sX, bg.sY, bg.w, bg.h, bg.x + bg.w, bg.y, bg.w, bg.h);
+    ctx.drawImage(this.bgImg, bg.sX, bg.sY, bg.w, bg.h, bg.x + bg.w, bg.y, bg.w, bg.h);
 
-      // FOREGROUND
-      ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x, fg.y,
-        fg.w, fg.h);
+    // FOREGROUND
+    ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x, fg.y,
+      fg.w, fg.h);
 
-      ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x + fg.w, fg.y, fg.w, fg.h)
-      ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x + fg.w * 2, fg.y, fg.w, fg.h)
-    // }
+    ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x + fg.w, fg.y, fg.w, fg.h)
+    ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x + fg.w * 2, fg.y, fg.w, fg.h)
   }
 
   draw(ctx) {

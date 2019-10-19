@@ -262,13 +262,6 @@ class Game {
     // "#70c5ce"; - SKY COLOR
     // "#86E18D"; - BRUSH COLOR
 
-    // ctx.fillStyle = "skyblue";
-    // ctx.fillRect(0, 0, this.width, this.height);
-
-    // IMG SOURCE FOR BACKGROUND
-    // let bgImg = new Image();
-    // bgImg.src = "../img/background-sprites.png";
-
     // SLICING OUT BUILDINGS, CLOUDS, AND BRUSH
     const bg = {
       sX: 0,
@@ -289,20 +282,18 @@ class Game {
       y: this.height - 112
     }
 
-    // bgImg.onload = function(){
-      //  BUILDINGS, CLOUDS, AND BRUSH
-      ctx.drawImage(this.bgImg, bg.sX, bg.sY, bg.w, bg.h, bg.x, bg.y,
-      bg.w, bg.h);
+    //  BUILDINGS, CLOUDS, AND BRUSH
+    ctx.drawImage(this.bgImg, bg.sX, bg.sY, bg.w, bg.h, bg.x, bg.y,
+    bg.w, bg.h);
 
-      ctx.drawImage(this.bgImg, bg.sX, bg.sY, bg.w, bg.h, bg.x + bg.w, bg.y, bg.w, bg.h);
+    ctx.drawImage(this.bgImg, bg.sX, bg.sY, bg.w, bg.h, bg.x + bg.w, bg.y, bg.w, bg.h);
 
-      // FOREGROUND
-      ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x, fg.y,
-        fg.w, fg.h);
+    // FOREGROUND
+    ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x, fg.y,
+      fg.w, fg.h);
 
-      ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x + fg.w, fg.y, fg.w, fg.h)
-      ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x + fg.w * 2, fg.y, fg.w, fg.h)
-    // }
+    ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x + fg.w, fg.y, fg.w, fg.h)
+    ctx.drawImage(this.bgImg, fg.sX, fg.sY, fg.w, fg.h, fg.x + fg.w * 2, fg.y, fg.w, fg.h)
   }
 
   draw(ctx) {
@@ -371,14 +362,13 @@ class GameView {
       this.frameCount = 0;
     }
 
-    if (this.game.jonkeySong.frame > 4) this.game.jonkeySong.frame = 0;
     if (this.game.flameBarrel.frame > 1) this.game.flameBarrel.frame = 0;
 
     this.ctx.clearRect(0, 0, this.game.width, this.game.height);
 
     this.game.plumber.move(timeDelta)
     this.game.draw(this.ctx);
-    
+
     this.lastTime = time
     requestAnimationFrame(this.loop.bind(this))
   }
@@ -423,8 +413,9 @@ class GameView {
       this.game.plumber.frame = 2;
     }
 
-    if (e.key === " " && this.spacebar && this.game.plumber.canJump) {
-      this.game.plumber.dY = -50;
+    if (e.key === " " && this.spacebar && this.game.plumber.canJump) { // && this.game.plumber.jumpHeight < 50) {
+      this.game.plumber.jumpHeight += 50
+      if (this.game.plumber.jumpHeight < 51) this.game.plumber.dY = -50;
       this.game.plumber.canJump = false;
     } else if (!this.spacebar && this.game.plumber.posY <= 500){
       if (this.rightKey) {
@@ -517,14 +508,11 @@ class JonkeySong{
   }
 
   draw(ctx){
-    // let sprite = new Image();
-    // sprite.src = "../img/sprites.png";
 
     const jonkeySong = {
       animation: [
         { sX: 58, sY: 152 },
         { sX: 9, sY: 152 },
-        // { sX: 158, sY: 152 },
         { sX: 158, sY: 152 },
         { sX: 254, sY: 152 },
         { sX: 202, sY: 152 }
@@ -534,12 +522,17 @@ class JonkeySong{
       x: 100,
       y: 100,
     }
-
-    // if (this.frame = 2) jonkeySong.animation.w = 43;
+    if (this.frame > 4) {
+      jonkeySong.w === 49;
+      this.frame = 0;
+    }
+    if (this.frame === 1) jonkeySong.w = 40;
+    if (this.frame === 2) jonkeySong.w = 40;
+    if (this.frame === 3) jonkeySong.w = 45;
+    if (this.frame === 4) jonkeySong.w = 49;
 
     let jSong = jonkeySong.animation[this.frame]
 
-    // sprite.onload = function() {
       ctx.drawImage(this.sprite, 
         jSong.sX, 
         jSong.sY, 
@@ -550,9 +543,6 @@ class JonkeySong{
         jonkeySong.w * 1.5, 
         jonkeySong.h * 1.5);
 
-
-      // if (this.frame > 4) this.frame = 0;
-    // }
   }
 }
 
@@ -754,6 +744,7 @@ class Plumber{
     this.canJump = true;
     this.frame = 0;
     this.direction = "left"
+    this.jumpHeight = 0;
 
     this.sprite = new Image();
     this.sprite.src = "../img/sprites.png";
@@ -773,8 +764,6 @@ class Plumber{
       y: this.posY,
       w: 12,
       h: 16,
-
-      frame: 0
     }
 
     const plumberL = {
@@ -789,8 +778,6 @@ class Plumber{
       y: this.posY,
       w: 12,
       h: 16,
-
-      frame: 0
     };
 
     let plumber = this.direction === "left" ? plumberL.walkLeftAnimation[this.frame] : plumberR.walkRightAnimation[this.frame];
@@ -818,16 +805,6 @@ class Plumber{
         plumberR.h * 1.5
       );
     }
-
-    // if (this.posY < 504 && this.posX < 32) {
-      
-      // this.canJump = false;
-      // this.posY += 1;
-      // if (this.posY = 503) this.canJump = true;
-
-      // 
-    // }
-    // if (this.posY = 504) this.canJump = true;
 
     if (this.posX < 5) this.posX = 8;
     

@@ -9,6 +9,7 @@ class Plumber{
     this.canJump = true;
     this.frame = 0;
     this.direction = "left"
+    this.jumpHeight = 0;
 
     this.sprite = new Image();
     this.sprite.src = "../img/sprites.png";
@@ -28,8 +29,6 @@ class Plumber{
       y: this.posY,
       w: 12,
       h: 16,
-
-      frame: 0
     }
 
     const plumberL = {
@@ -44,8 +43,6 @@ class Plumber{
       y: this.posY,
       w: 12,
       h: 16,
-
-      frame: 0
     };
 
     let plumber = this.direction === "left" ? plumberL.walkLeftAnimation[this.frame] : plumberR.walkRightAnimation[this.frame];
@@ -73,16 +70,6 @@ class Plumber{
         plumberR.h * 1.5
       );
     }
-
-    // if (this.posY < 504 && this.posX < 32) {
-      
-      // this.canJump = false;
-      // this.posY += 1;
-      // if (this.posY = 503) this.canJump = true;
-
-      // 
-    // }
-    // if (this.posY = 504) this.canJump = true;
 
     if (this.posX < 5) this.posX = 8;
     

@@ -9,14 +9,11 @@ class JonkeySong{
   }
 
   draw(ctx){
-    // let sprite = new Image();
-    // sprite.src = "../img/sprites.png";
 
     const jonkeySong = {
       animation: [
         { sX: 58, sY: 152 },
         { sX: 9, sY: 152 },
-        // { sX: 158, sY: 152 },
         { sX: 158, sY: 152 },
         { sX: 254, sY: 152 },
         { sX: 202, sY: 152 }
@@ -26,12 +23,17 @@ class JonkeySong{
       x: 100,
       y: 100,
     }
-
-    // if (this.frame = 2) jonkeySong.animation.w = 43;
+    if (this.frame > 4) {
+      jonkeySong.w === 49;
+      this.frame = 0;
+    }
+    if (this.frame === 1) jonkeySong.w = 40;
+    if (this.frame === 2) jonkeySong.w = 40;
+    if (this.frame === 3) jonkeySong.w = 45;
+    if (this.frame === 4) jonkeySong.w = 49;
 
     let jSong = jonkeySong.animation[this.frame]
 
-    // sprite.onload = function() {
       ctx.drawImage(this.sprite, 
         jSong.sX, 
         jSong.sY, 
@@ -42,9 +44,6 @@ class JonkeySong{
         jonkeySong.w * 1.5, 
         jonkeySong.h * 1.5);
 
-
-      // if (this.frame > 4) this.frame = 0;
-    // }
   }
 }
 

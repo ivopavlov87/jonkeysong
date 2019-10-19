@@ -38,14 +38,13 @@ class GameView {
       this.frameCount = 0;
     }
 
-    if (this.game.jonkeySong.frame > 4) this.game.jonkeySong.frame = 0;
     if (this.game.flameBarrel.frame > 1) this.game.flameBarrel.frame = 0;
 
     this.ctx.clearRect(0, 0, this.game.width, this.game.height);
 
     this.game.plumber.move(timeDelta)
     this.game.draw(this.ctx);
-    
+
     this.lastTime = time
     requestAnimationFrame(this.loop.bind(this))
   }
@@ -90,8 +89,9 @@ class GameView {
       this.game.plumber.frame = 2;
     }
 
-    if (e.key === " " && this.spacebar && this.game.plumber.canJump) {
-      this.game.plumber.dY = -50;
+    if (e.key === " " && this.spacebar && this.game.plumber.canJump) { // && this.game.plumber.jumpHeight < 50) {
+      this.game.plumber.jumpHeight += 50
+      if (this.game.plumber.jumpHeight < 51) this.game.plumber.dY = -50;
       this.game.plumber.canJump = false;
     } else if (!this.spacebar && this.game.plumber.posY <= 500){
       if (this.rightKey) {
