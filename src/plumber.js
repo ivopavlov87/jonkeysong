@@ -4,12 +4,17 @@ class Plumber{
     this.game = game;
     this.posX = 430;
     this.posY = 503;
+    this.width = 14;
+    this.height = 16;
     this.dX = 0;
-    this.dY = 9;
-    this.canJump = true;
-    this.frame = 0;
+    this.dY = 0; // was 9
     this.direction = "left"
-    this.jumpHeight = 0;
+    this.falling = false;
+    this.jumping = false;
+    this.canJump = true;
+    this.jumpStart = 0;
+    this.onSurface = true;
+    this.frame = 0;
 
     this.sprite = new Image();
     this.sprite.src = "../img/sprites.png";
@@ -27,8 +32,8 @@ class Plumber{
       ],
       x: this.posX,
       y: this.posY,
-      w: 14,
-      h: 16,
+      w: this.width,
+      h: this.height,
     }
 
     const plumberL = {
@@ -41,11 +46,13 @@ class Plumber{
       ],
       x: this.posX,
       y: this.posY,
-      w: 12,
-      h: 16,
+      w: this.width,
+      h: this.height,
     };
 
-    let plumber = this.direction === "left" ? plumberL.walkLeftAnimation[this.frame] : plumberR.walkRightAnimation[this.frame];
+    let plumber = this.direction === "left" ? 
+    plumberL.walkLeftAnimation[this.frame] 
+    : plumberR.walkRightAnimation[this.frame];
 
     if (this.direction === "left"){
       ctx.drawImage(this.sprite,
@@ -55,8 +62,8 @@ class Plumber{
         plumberL.h,
         plumberL.x,
         plumberL.y,
-        plumberL.w * 1.5,
-        plumberL.h * 1.5
+        plumberL.w * this.game.scale,
+        plumberL.h * this.game.scale
       );
     } else if (this.direction === "right") {
       ctx.drawImage(this.sprite,
@@ -66,18 +73,36 @@ class Plumber{
         plumberR.h,
         plumberR.x,
         plumberR.y,
-        plumberR.w * 1.5,
-        plumberR.h * 1.5
+        plumberR.w * this.game.scale,
+        plumberR.h * this.game.scale
       );
     }
 
-    if (this.posX < 5) this.posX = 5;
-    
-    if (this.posX > 455) this.posX = 455;
-    if (this.posY > 503 && !this.canJump) this.canJump = true;
-  }
+    const plumberWidth = this.width * this.game.scale;
 
-  
+    // UNIVERSAL TOP BOUNDRY
+    if (this.posY < (this.height * this.game.scale)) {
+      this.posY = (this.height * this.game.scale)
+    };
+
+    // UNIVERSAL LEFT BOUNDRY
+    if (this.posX < 0) this.posX = 0;
+    
+    // UNIVERSAL RIGHT BOUNDRY
+    if (this.posX > (this.game.width - plumberWidth)) {
+      this.posX = (this.game.width - plumberWidth);
+    };
+
+    // GROUND BOUNDRY
+    if (this.posY >= 503) {
+      this.posY = 503;
+
+      this.canJump = true;
+      this.falling = false;
+      this.onSurface = true;
+    };
+    
+  }
 
   move(timeDelta){
     // debugger;
@@ -85,26 +110,34 @@ class Plumber{
       this.frame = 0
     }
 
+    if (this.onSurface) {
+      this.dY = 0;
+      this.falling = false;
+      this.canJump = true;
+    };
+
+    if (this.jumping && this.canJump){
+      this.dY = -5;
+      this.falling = true;
+      this.canJump = false;
+      this.onSurface = false;
+    }
+    
+
+    if (this.falling && !this.onSurface){
+      this.dY += 0.3;
+    }
+
     const normal = 1000 / 60
     const velocityScale = timeDelta / normal;
+    
 
     const offsetX = this.dX * velocityScale;
-    const offsetY = this.dY * velocityScale / 2;
+    const offsetY = this.dY * velocityScale;
 
     this.posX += offsetX;
     this.posY += offsetY;
-
-
-
-    if (this.posY < 0) this.posY = 0;
-    // if (this.posY < 503) this.dY += 1;
-    if (this.dY < 10) this.dY += 1;
-    if (this.dX === 0 && this.posY > 500) this.frame = 0;
-    if (this.posY > 502) this.posY = 504;
-    // if (this.posY > 630) this.posY = 630;
   }
 }
-
-window.Plumber;
 
 export default Plumber;

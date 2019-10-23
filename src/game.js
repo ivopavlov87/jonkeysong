@@ -11,6 +11,8 @@ class Game {
   constructor() {
     this.width = 480;
     this.height = 640;
+    this.scale = 1.5;
+    this.gravity = 9;
     this.jonkeySong = new JonkeySong(this);
     this.barrel = new Barrel(this);
     this.levelOne = new LevelOne(this);

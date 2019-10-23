@@ -176,6 +176,8 @@ class FlameBarrel {
   constructor(game) {
     this.game = game;
     this.frame = 0;
+    this.dX = 456;
+    this.dY = 491;
 
     this.sprite = new Image();
     this.sprite.src = "../img/sprites.png";
@@ -190,8 +192,8 @@ class FlameBarrel {
         { sX: 125, sY: 256 },
         { sX: 144, sY: 256 }
       ],
-      x: 456,
-      y: 491,
+      x: this.dX,
+      y: this.dY,
       w: 16,
       h: 24,
 
@@ -247,6 +249,8 @@ class Game {
   constructor() {
     this.width = 480;
     this.height = 640;
+    this.scale = 1.5;
+    this.gravity = 9;
     this.jonkeySong = new _jonkey_song__WEBPACK_IMPORTED_MODULE_0__["default"](this);
     this.barrel = new _barrel__WEBPACK_IMPORTED_MODULE_1__["default"](this);
     this.levelOne = new _level_one__WEBPACK_IMPORTED_MODULE_2__["default"](this);
@@ -364,7 +368,7 @@ class GameView {
 
     this.ctx.clearRect(0, 0, this.game.width, this.game.height);
 
-    this.game.plumber.move(timeDelta)
+    this.game.plumber.move(timeDelta);
     this.game.draw(this.ctx);
 
     this.lastTime = time
@@ -398,29 +402,22 @@ class GameView {
       this.spacebar = true;
     }
 
-    if (e.key === "ArrowLeft" && this.leftKey) {
+    if (this.leftKey) {
       this.game.plumber.dX = -3;
       this.game.plumber.direction = "left";
       this.game.plumber.frame += 1
     }
-    if (e.key === "ArrowRight" && this.rightKey) {
+    if (this.rightKey) {
       this.game.plumber.dX = 3;
       this.game.plumber.direction = "right";
       this.game.plumber.frame += 1
     }
 
-    if (e.key === " " && this.game.plumber.canJump) {
+    if (this.game.plumber.canJump && this.game.plumber.onSurface && this.spacebar) {
         this.game.plumber.frame = 2;
-        this.game.plumber.dY -= 25; // jump height
-        this.game.plumber.canJump = false;
-    } else if (!this.spacebar && this.game.plumber.posY <= 500){
-      if (this.rightKey) {
-        this.game.plumber.dX = 7;
-      } else if (this.leftKey) {
-        this.game.plumber.dX = -7;
-      }
+        this.game.plumber.jumping = true;
+        this.game.plumber.falling = false;
     }
-
 
   }
 
@@ -429,10 +426,17 @@ class GameView {
       this.game.plumber.direction = "right";
       this.rightKey = false;
       this.game.plumber.dX = 0;
-    } else if (e.key === "ArrowLeft" || e.key === "a") {
+    }
+    
+    if (e.key === "ArrowLeft" || e.key === "a") {
       this.game.plumber.direction = "left";
       this.leftKey = false;
       this.game.plumber.dX = 0;
+    }
+
+    if (e.key === " "){
+      this.spacebar = false;
+      this.game.plumber.jumping = false;
     }
   }
 
@@ -727,12 +731,17 @@ class Plumber{
     this.game = game;
     this.posX = 430;
     this.posY = 503;
+    this.width = 14;
+    this.height = 16;
     this.dX = 0;
-    this.dY = 9;
-    this.canJump = true;
-    this.frame = 0;
+    this.dY = 0; // was 9
     this.direction = "left"
-    this.jumpHeight = 0;
+    this.falling = false;
+    this.jumping = false;
+    this.canJump = true;
+    this.jumpStart = 0;
+    this.onSurface = true;
+    this.frame = 0;
 
     this.sprite = new Image();
     this.sprite.src = "../img/sprites.png";
@@ -750,8 +759,8 @@ class Plumber{
       ],
       x: this.posX,
       y: this.posY,
-      w: 14,
-      h: 16,
+      w: this.width,
+      h: this.height,
     }
 
     const plumberL = {
@@ -764,11 +773,13 @@ class Plumber{
       ],
       x: this.posX,
       y: this.posY,
-      w: 12,
-      h: 16,
+      w: this.width,
+      h: this.height,
     };
 
-    let plumber = this.direction === "left" ? plumberL.walkLeftAnimation[this.frame] : plumberR.walkRightAnimation[this.frame];
+    let plumber = this.direction === "left" ? 
+    plumberL.walkLeftAnimation[this.frame] 
+    : plumberR.walkRightAnimation[this.frame];
 
     if (this.direction === "left"){
       ctx.drawImage(this.sprite,
@@ -778,8 +789,8 @@ class Plumber{
         plumberL.h,
         plumberL.x,
         plumberL.y,
-        plumberL.w * 1.5,
-        plumberL.h * 1.5
+        plumberL.w * this.game.scale,
+        plumberL.h * this.game.scale
       );
     } else if (this.direction === "right") {
       ctx.drawImage(this.sprite,
@@ -789,18 +800,36 @@ class Plumber{
         plumberR.h,
         plumberR.x,
         plumberR.y,
-        plumberR.w * 1.5,
-        plumberR.h * 1.5
+        plumberR.w * this.game.scale,
+        plumberR.h * this.game.scale
       );
     }
 
-    if (this.posX < 5) this.posX = 5;
-    
-    if (this.posX > 455) this.posX = 455;
-    if (this.posY > 503 && !this.canJump) this.canJump = true;
-  }
+    const plumberWidth = this.width * this.game.scale;
 
-  
+    // UNIVERSAL TOP BOUNDRY
+    if (this.posY < (this.height * this.game.scale)) {
+      this.posY = (this.height * this.game.scale)
+    };
+
+    // UNIVERSAL LEFT BOUNDRY
+    if (this.posX < 0) this.posX = 0;
+    
+    // UNIVERSAL RIGHT BOUNDRY
+    if (this.posX > (this.game.width - plumberWidth)) {
+      this.posX = (this.game.width - plumberWidth);
+    };
+
+    // GROUND BOUNDRY
+    if (this.posY >= 503) {
+      this.posY = 503;
+
+      this.canJump = true;
+      this.falling = false;
+      this.onSurface = true;
+    };
+    
+  }
 
   move(timeDelta){
     // debugger;
@@ -808,27 +837,35 @@ class Plumber{
       this.frame = 0
     }
 
+    if (this.onSurface) {
+      this.dY = 0;
+      this.falling = false;
+      this.canJump = true;
+    };
+
+    if (this.jumping && this.canJump){
+      this.dY = -5;
+      this.falling = true;
+      this.canJump = false;
+      this.onSurface = false;
+    }
+    
+
+    if (this.falling && !this.onSurface){
+      this.dY += 0.3;
+    }
+
     const normal = 1000 / 60
     const velocityScale = timeDelta / normal;
+    
 
     const offsetX = this.dX * velocityScale;
-    const offsetY = this.dY * velocityScale / 2;
+    const offsetY = this.dY * velocityScale;
 
     this.posX += offsetX;
     this.posY += offsetY;
-
-
-
-    if (this.posY < 0) this.posY = 0;
-    // if (this.posY < 503) this.dY += 1;
-    if (this.dY < 10) this.dY += 1;
-    if (this.dX === 0 && this.posY > 500) this.frame = 0;
-    if (this.posY > 502) this.posY = 504;
-    // if (this.posY > 630) this.posY = 630;
   }
 }
-
-window.Plumber;
 
 /* harmony default export */ __webpack_exports__["default"] = (Plumber);
 

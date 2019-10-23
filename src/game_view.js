@@ -40,7 +40,7 @@ class GameView {
 
     this.ctx.clearRect(0, 0, this.game.width, this.game.height);
 
-    this.game.plumber.move(timeDelta)
+    this.game.plumber.move(timeDelta);
     this.game.draw(this.ctx);
 
     this.lastTime = time
@@ -74,29 +74,22 @@ class GameView {
       this.spacebar = true;
     }
 
-    if (e.key === "ArrowLeft" && this.leftKey) {
+    if (this.leftKey) {
       this.game.plumber.dX = -3;
       this.game.plumber.direction = "left";
       this.game.plumber.frame += 1
     }
-    if (e.key === "ArrowRight" && this.rightKey) {
+    if (this.rightKey) {
       this.game.plumber.dX = 3;
       this.game.plumber.direction = "right";
       this.game.plumber.frame += 1
     }
 
-    if (e.key === " " && this.game.plumber.canJump) {
+    if (this.game.plumber.canJump && this.game.plumber.onSurface && this.spacebar) {
         this.game.plumber.frame = 2;
-        this.game.plumber.dY -= 25; // jump height
-        this.game.plumber.canJump = false;
-    } else if (!this.spacebar && this.game.plumber.posY <= 500){
-      if (this.rightKey) {
-        this.game.plumber.dX = 7;
-      } else if (this.leftKey) {
-        this.game.plumber.dX = -7;
-      }
+        this.game.plumber.jumping = true;
+        this.game.plumber.falling = false;
     }
-
 
   }
 
@@ -105,10 +98,17 @@ class GameView {
       this.game.plumber.direction = "right";
       this.rightKey = false;
       this.game.plumber.dX = 0;
-    } else if (e.key === "ArrowLeft" || e.key === "a") {
+    }
+    
+    if (e.key === "ArrowLeft" || e.key === "a") {
       this.game.plumber.direction = "left";
       this.leftKey = false;
       this.game.plumber.dX = 0;
+    }
+
+    if (e.key === " "){
+      this.spacebar = false;
+      this.game.plumber.jumping = false;
     }
   }
 
