@@ -822,12 +822,16 @@ class Plumber{
 
     // GROUND BOUNDRY
     if (this.posY >= 503) {
-      this.posY = 503;
+      // this.posY = 503;
 
       this.canJump = true;
       this.falling = false;
       this.onSurface = true;
     };
+
+    // if (this.posX >= 450) {
+    //   this.posX = 450
+    // }
     
   }
 
@@ -854,6 +858,18 @@ class Plumber{
     if (this.falling && !this.onSurface){
       this.dY += 0.3;
     }
+    
+
+    // FIRE BARREL COLLISION DETECTION, NEED TO MOVE/IMPLEMENT ELSEWHERE
+    // FOR TESTING PURPOSES
+    if (this.posX >= 435 && this.posY <= 480 && this.posY >= 470){
+      this.onSurface = true;
+    } else if (this.posX < 435) {
+      this.onSurface = false;
+      this.falling = true;
+    } else if (this.posX > 435 && this.posY > 500){
+      this.posX = 435;
+    }
 
     const normal = 1000 / 60
     const velocityScale = timeDelta / normal;
@@ -864,6 +880,9 @@ class Plumber{
 
     this.posX += offsetX;
     this.posY += offsetY;
+
+    // UNIVERSAL GROUND BOUNDRY AGAIN
+    if (this.posY >= 503) this.posY = 503;
   }
 }
 
