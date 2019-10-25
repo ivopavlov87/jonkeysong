@@ -78,29 +78,29 @@ class Plumber{
       );
     }
 
-    const plumberWidth = this.width * this.game.scale;
+    // const plumberWidth = this.width * this.game.scale;
 
-    // UNIVERSAL TOP BOUNDRY
-    if (this.posY < (this.height * this.game.scale)) {
-      this.posY = (this.height * this.game.scale)
-    };
+    // // UNIVERSAL TOP BOUNDRY
+    // if (this.posY < (this.height * this.game.scale)) {
+    //   this.posY = (this.height * this.game.scale)
+    // };
 
-    // UNIVERSAL LEFT BOUNDRY
-    if (this.posX < 0) this.posX = 0;
+    // // UNIVERSAL LEFT BOUNDRY
+    // if (this.posX < 0) this.posX = 0;
     
-    // UNIVERSAL RIGHT BOUNDRY
-    if (this.posX > (this.game.width - plumberWidth)) {
-      this.posX = (this.game.width - plumberWidth);
-    };
+    // // UNIVERSAL RIGHT BOUNDRY
+    // if (this.posX > (this.game.width - plumberWidth)) {
+    //   this.posX = (this.game.width - plumberWidth);
+    // };
 
     // GROUND BOUNDRY
-    if (this.posY >= 503) {
-      // this.posY = 503;
+    // if (this.posY >= 503) {
+    //   // this.posY = 503;
 
-      this.canJump = true;
-      this.falling = false;
-      this.onSurface = true;
-    };
+    //   this.canJump = true;
+    //   this.falling = false;
+    //   this.onSurface = true;
+    // };
 
   }
 
@@ -129,16 +129,7 @@ class Plumber{
     }
     
 
-    // FIRE BARREL COLLISION DETECTION, NEED TO MOVE/IMPLEMENT ELSEWHERE
-    // FOR TESTING PURPOSES
-    if (this.posX >= 440 && this.posY <= 480 && this.posY >= 470){
-      this.onSurface = true;
-    } else if (this.posX < 440) {
-      this.onSurface = false;
-      this.falling = true;
-    } else if (this.posX > 440 && this.posY > 500){
-      this.posX = 440;
-    }
+
 
     const normal = 1000 / 60
     const velocityScale = timeDelta / normal;
@@ -150,8 +141,39 @@ class Plumber{
     this.posX += offsetX;
     this.posY += offsetY;
 
+    // FIRE BARREL COLLISION DETECTION, NEED TO MOVE/IMPLEMENT ELSEWHERE
+    // FOR TESTING PURPOSES
+    if (this.posX >= 440 && this.posY <= 480 && this.posY >= 470) {
+      this.onSurface = true;
+    } else if (this.posX < 440) {
+      this.onSurface = false;
+      this.falling = true;
+    } else if (this.posX > 440 && this.posY > 500) {
+      this.posX = 440;
+    }
+
+    const plumberWidth = this.width * this.game.scale;
+
+    // UNIVERSAL TOP BOUNDRY
+    if (this.posY < (this.height * this.game.scale)) {
+      this.posY = (this.height * this.game.scale)
+    };
+
+    // UNIVERSAL LEFT BOUNDRY
+    if (this.posX < 0) this.posX = 0;
+
+    // UNIVERSAL RIGHT BOUNDRY
+    if (this.posX > (this.game.width - plumberWidth)) {
+      this.posX = (this.game.width - plumberWidth);
+    };
+
     // UNIVERSAL GROUND BOUNDRY AGAIN
-    if (this.posY >= 503) this.posY = 503;
+    if (this.posY >= 503) {
+      this.posY = 503;
+      this.canJump = true;
+      this.falling = false;
+      this.onSurface = true;
+    }
   }
 }
 
