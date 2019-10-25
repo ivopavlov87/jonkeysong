@@ -3,7 +3,7 @@ class LevelOne{
     this.game = game;
 
     this.sprite = new Image();
-    this.sprite.src = "../img/sprites.png";
+    this.sprite.src = "./sprites.png";
   }
 
   draw(ctx){
