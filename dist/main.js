@@ -259,7 +259,6 @@ class Game {
     this.princess = new _princess__WEBPACK_IMPORTED_MODULE_5__["default"](this);
     this.bgImg = new Image();
     this.bgImg.src = "../img/background-sprites.png";
-
   }
 
   drawBackground(ctx) {

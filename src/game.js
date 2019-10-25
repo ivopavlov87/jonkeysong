@@ -21,7 +21,6 @@ class Game {
     this.princess = new Princess(this);
     this.bgImg = new Image();
     this.bgImg.src = "../img/background-sprites.png";
-
   }
 
   drawBackground(ctx) {
