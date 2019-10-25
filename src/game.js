@@ -20,7 +20,7 @@ class Game {
     this.flameBarrel = new FlameBarrel(this);
     this.princess = new Princess(this);
     this.bgImg = new Image();
-    this.bgImg.src = "../background-sprites.png";
+    this.bgImg.src = "./background-sprites.png";
   }
 
   drawBackground(ctx) {
