@@ -3,7 +3,7 @@ class Barrel{
     this.game = game;
 
     this.sprite = new Image();
-    this.sprite.src = "./sprites.png";
+    this.sprite.src = "../sprites.png";
   }
 
   draw(ctx) {
