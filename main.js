@@ -854,9 +854,6 @@ class Plumber{
       this.dY += 0.3;
     }
     
-
-
-
     const normal = 1000 / 60
     const velocityScale = timeDelta / normal;
     
