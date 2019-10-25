@@ -6,7 +6,7 @@ class FlameBarrel {
     this.dY = 491;
 
     this.sprite = new Image();
-    this.sprite.src = "../sprites.png";
+    this.sprite.src = "sprites.png";
   }
 
   draw(ctx){

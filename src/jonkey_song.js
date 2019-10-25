@@ -5,7 +5,7 @@ class JonkeySong{
     this.frame = 0
 
     this.sprite = new Image();
-    this.sprite.src = "../sprites.png";
+    this.sprite.src = "sprites.png";
   }
 
   draw(ctx){
