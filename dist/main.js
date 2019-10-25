@@ -829,10 +829,6 @@ class Plumber{
       this.onSurface = true;
     };
 
-    // if (this.posX >= 450) {
-    //   this.posX = 450
-    // }
-    
   }
 
   move(timeDelta){
@@ -862,13 +858,13 @@ class Plumber{
 
     // FIRE BARREL COLLISION DETECTION, NEED TO MOVE/IMPLEMENT ELSEWHERE
     // FOR TESTING PURPOSES
-    if (this.posX >= 435 && this.posY <= 480 && this.posY >= 470){
+    if (this.posX >= 440 && this.posY <= 480 && this.posY >= 470){
       this.onSurface = true;
-    } else if (this.posX < 435) {
+    } else if (this.posX < 440) {
       this.onSurface = false;
       this.falling = true;
-    } else if (this.posX > 435 && this.posY > 500){
-      this.posX = 435;
+    } else if (this.posX > 440 && this.posY > 500){
+      this.posX = 440;
     }
 
     const normal = 1000 / 60
